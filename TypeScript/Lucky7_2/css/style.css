@@ -120,7 +120,8 @@ body {
   text-align: center;
   background: #fff;
   border-radius: 15px;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  visibility: hidden; }
   .balloon::before {
     content: "";
     position: absolute;

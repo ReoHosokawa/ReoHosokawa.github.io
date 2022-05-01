@@ -28,9 +28,18 @@ export class MemoryWeakness {
      * ゲーム画面を初期化する
      */
     public init = () => {
-        // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
         const filePath = Constant.ImageFolderPath + Constant.DefaultCardFileName + Constant.ImageExtension;
-        this.cardImages.forEach($image => $image.src = filePath);
+        this.cardImages.forEach($image => {
+            // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
+            $image.src = filePath;
+
+            // トランプ画像がダブルクリックされた場合のイベント定義
+            $image.addEventListener("dblclick", e => {
+                const cardNumber = Number($image.dataset.cardNumber);
+                // 選択されたトランプを表向きにする
+                $image.src = this.createTrumpImagePath(cardNumber);
+            });
+        });
 
         // ライフ画像要素が設定されている可能性があるので、いったん削除する
         this.removeLifeImages();
@@ -47,7 +56,6 @@ export class MemoryWeakness {
 
         // カードをシャッフルする
         this.shuffleCards();
-        console.log(this.cardList);
     }
 
     // -------------------------------------
@@ -99,7 +107,7 @@ export class MemoryWeakness {
     private createPairList = (ranks: number[], maxPair: number): {"type": number, "value": number}[] => {
         // トランプの絵札一覧
         const cardTypeList = Constant.CardTypeList;
-        const types = this.createTypeList(cardTypeList.Spade.value, cardTypeList.Joker.value);
+        const types = this.createTypeList(0, cardTypeList.length - 1);
 
         const pairList = new Array();
         for (let i = 0; i < maxPair; i++) {
@@ -112,7 +120,7 @@ export class MemoryWeakness {
             // ペアを作成する
             for (let j = 0; j < 2; j++) {
                 const type = cardTypeList[j];
-                pairList.push({ "key": type, "value": rank });
+                pairList.push({ "type": type, "value": rank });
             }
         }
 
@@ -134,6 +142,23 @@ export class MemoryWeakness {
         }
 
         return Linq.from(types).shuffle().toArray();
+    }
+
+    /**
+     * 選択されたカード番号に紐づくトランプの画像パスを生成する
+     * @param cardNumber 対象のカード番号
+     * @returns 画像ファイルパス
+     */
+    private createTrumpImagePath = (cardNumber: number): string => {
+        const cardData = this.cardList[cardNumber];
+        // ジョーカー用かどうか
+        const isJoker = cardData.value === Constant.JokerNumber;
+        // カードの絵札情報
+        const cardType = Constant.CardTypeList[isJoker ? Constant.JokerType : cardData.type];
+        // 画像ファイル名
+        const fileName = cardType.value + this.zeroPadding(isJoker ? cardData.type : cardData.value, 2) + Constant.ImageExtension;
+        // 画像パス
+        return Constant.ImageFolderPath + fileName;
     }
 
     /**
@@ -177,6 +202,14 @@ export class MemoryWeakness {
      * @returns ミス可能な回数を示すメッセージ
      */
     private createStatusMessage = (missCount: number): string => `あと ${missCount} 回ミスできます。`;
+
+    /**
+     * 指定された数値の先頭を 0 埋めする
+     * @param target 対象の数値
+     * @param len 0 埋めする桁数
+     * @returns 0 埋めした後の値
+     */
+    private zeroPadding = (target: number, len: number): string => ("0".repeat(len) + target).slice(-len);
 
     // -------------------------------------
     // フィールド変数

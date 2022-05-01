@@ -19,6 +19,13 @@ export class Constant {
     }
 
     /**
+     * ジョーカーを示す絵札番号
+     */
+    static get JokerType(): number {
+        return 4;
+    }
+
+    /**
      * トランプ画像の開始番号
      */
     static get StartCardNumber(): number {
@@ -78,12 +85,12 @@ export class Constant {
      * カードの絵札（スペード、ハート、ダイヤ、クラブ、ジョーカー）別 key と value の一覧
      */
     static get CardTypeList() {
-        return {
-            Spade: { "key": "s", "value": 0 },
-            Heart: { "key": "h", "value": 1 },
-            Diamond: { "key": "d", "value": 2 },
-            Club: { "key": "c", "value": 3 },
-            Joker: { "key": "x", "value": 4 },
-        };
+        return [
+            { "key": "Spade", "value": "s" },
+            { "key": "Heart", "value": "h" },
+            { "key": "Diamond", "value": "d" },
+            { "key": "Club", "value": "c" },
+            { "key": "Joker", "value": "x" },
+        ];
     }
 }

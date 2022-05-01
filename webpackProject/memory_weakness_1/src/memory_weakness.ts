@@ -1,4 +1,5 @@
 import { Constant } from './constant';
+import Linq from 'linq';
 
 /**
  * 神経衰弱クラス
@@ -16,6 +17,7 @@ export class MemoryWeakness {
         this.pairCountArea = <HTMLDivElement>document.getElementById("pairCountArea");
         this.missCountArea = <HTMLDivElement>document.getElementById("missCountArea");
         this.messageArea = <HTMLDivElement>document.getElementById("messageArea");
+        this.cardList = [];
     }
 
     // -------------------------------------
@@ -27,7 +29,8 @@ export class MemoryWeakness {
      */
     public init = () => {
         // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
-        this.cardImages.forEach($image => $image.src = Constant.ImageFolderPath + Constant.DefaultCardFileName);
+        const filePath = Constant.ImageFolderPath + Constant.DefaultCardFileName + Constant.ImageExtension;
+        this.cardImages.forEach($image => $image.src = filePath);
 
         // ライフ画像要素が設定されている可能性があるので、いったん削除する
         this.removeLifeImages();
@@ -41,11 +44,97 @@ export class MemoryWeakness {
         this.missCountArea.textContent = this.createMissCountValue(defaultCount);
         // 残りミス可能数
         this.messageArea.textContent = this.createStatusMessage(Constant.MaxMissNumber);
+
+        // カードをシャッフルする
+        this.shuffleCards();
+        console.log(this.cardList);
     }
 
     // -------------------------------------
     // プライベートメソッド
     // -------------------------------------
+
+    /**
+     * トランプのカードをシャッフルする
+     */
+    private shuffleCards = () => {
+        // トランプのランク一覧
+        const baseRanks = this.createRankList(Constant.StartCardNumber, Constant.EndCardNumber);
+
+        // ランク一覧シャッフル
+        const ranks = Linq.from(baseRanks).shuffle().toArray();
+
+        // 定義されている数のペアを用意する
+        const basePairList = this.createPairList(ranks, Constant.MaxPair);
+        // 用意したペア一覧をシャッフルする
+        this.cardList = Linq.from(basePairList).shuffle().toArray();
+    }
+
+    /**
+     * 指定された開始番号～終了番号までのランク一覧を生成する
+     * @param start トランプの開始番号
+     * @param end トランプの終了番号
+     * @returns トランプの開始番号 ～ トランプの終了番号までのランク一覧
+     */
+    private createRankList = (start: number, end: number): number[] => {
+        return Linq.range(start, end).toArray();
+    }
+
+    /**
+     * 指定された開始番号～終了番号までのタイプ番号一覧を生成する
+     * @param start カードタイプの開始番号
+     * @param end カードタイプの終了番号
+     * @returns カードタイプ番号一覧
+     */
+    private createTypeList = (start: number, end: number): number[] => {
+        return Linq.range(start, end).toArray();
+    }
+
+    /**
+     * 指定されたペア数分、トランプのペアを用意する
+     * @param ranks トランプのカード番号一覧
+     * @param maxPair 最大ペア数
+     * @returns ペア一覧
+     */
+    private createPairList = (ranks: number[], maxPair: number): {"type": number, "value": number}[] => {
+        // トランプの絵札一覧
+        const cardTypeList = Constant.CardTypeList;
+        const types = this.createTypeList(cardTypeList.Spade.value, cardTypeList.Joker.value);
+
+        const pairList = new Array();
+        for (let i = 0; i < maxPair; i++) {
+            const rank = ranks[i];
+            // ジョーカー用の番号かどうか
+            const isJoker = rank === Constant.JokerNumber;
+            // 絵札をシャッフルする
+            const cardTypeList = this.shuffleCardTypes(types, isJoker);
+
+            // ペアを作成する
+            for (let j = 0; j < 2; j++) {
+                const type = cardTypeList[j];
+                pairList.push({ "key": type, "value": rank });
+            }
+        }
+
+        return pairList;
+    }
+
+    /**
+     * カードの絵札一覧をシャッフルする
+     * @param types カードの絵札一覧
+     * @param isJoker ジョーカーかどうか
+     * @returns シャッフル後の絵札一覧
+     */
+    private shuffleCardTypes = (types: number[], isJoker: boolean): number[] => {
+        if (isJoker) {
+            // ジョーカーの場合
+            // ジョーカー用のカードは 2 種類しかないので、 1 と 2 のみを格納した配列を用意する
+            const jokerTypes = Linq.range(1, 2).toArray();
+            return Linq.from(jokerTypes).shuffle().toArray();
+        }
+
+        return Linq.from(types).shuffle().toArray();
+    }
 
     /**
      * ライフ画像を最大ミス可能数分、ライフ表示エリアに追加する
@@ -117,4 +206,9 @@ export class MemoryWeakness {
      * メッセージ表示要素
      */
     private messageArea: HTMLDivElement;
+
+    /**
+     * シャッフル後のカード情報一覧
+     */
+    private cardList: { type: number, value: number }[];
 }

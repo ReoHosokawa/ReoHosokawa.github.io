@@ -28,6 +28,9 @@ export class MemoryWeakness {
      */
     public init = () => {
         this.cardList = [];
+        this.selectCardCount = 0;
+        this.selectCardList = [];
+        this.isSelectable = true;
         const filePath = Constant.ImageFolderPath + Constant.DefaultCardFileName + Constant.ImageExtension;
         this.cardImages.forEach($image => {
             // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
@@ -244,4 +247,18 @@ export class MemoryWeakness {
      * シャッフル後のカード情報一覧
      */
     private cardList: { type: number, value: number }[];
+    /**
+     * 選択されたカードの枚数
+     */
+    private selectCardCount: number = 0;
+
+    /**
+     * 選択されたカードの情報一覧
+     */
+    private selectCardList: number[] = [];
+
+    /**
+     * カードは選択可能か
+     */
+    private isSelectable: boolean = true;
 }

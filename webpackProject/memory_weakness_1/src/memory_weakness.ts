@@ -246,7 +246,8 @@ export class MemoryWeakness {
     /**
      * シャッフル後のカード情報一覧
      */
-    private cardList: { type: number, value: number }[];
+    private cardList: { type: number, value: number }[] = [];
+
     /**
      * 選択されたカードの枚数
      */

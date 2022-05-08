@@ -31,6 +31,8 @@ export class MemoryWeakness {
         this.selectCardCount = 0;
         this.selectCardList = [];
         this.isSelectable = true;
+
+        // 初期状態で表示するトランプの裏向き画像パス
         const filePath = Constant.ImageFolderPath + Constant.DefaultCardFileName + Constant.ImageExtension;
         this.cardImages.forEach($image => {
             // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする

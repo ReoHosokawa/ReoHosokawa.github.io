@@ -5,6 +5,13 @@
 export class Constant {
 
     /**
+     * 各ターンで選択可能なカードの枚数
+     */
+    static get SelectableNumber(): number {
+        return 2;
+    }
+
+    /**
      * 最大ペア数
      */
     static get MaxPair(): number {

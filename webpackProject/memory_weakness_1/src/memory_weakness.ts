@@ -40,9 +40,29 @@ export class MemoryWeakness {
 
             // トランプ画像がダブルクリックされた場合のイベント定義
             $image.addEventListener("dblclick", e => {
+                if (!this.isSelectable) {
+                    return;
+                }
+
                 const cardNumber = Number($image.dataset.cardNumber);
+                if (this.selectCardCount === 1 && this.selectCardList[0] === cardNumber) {
+                    // すでにカードが 1 枚選択されている場合、今回選択されたカードがひとつ前に選択されたカードと
+                    // 同じ場所だった場合は何もしない
+                    return;
+                }
                 // 選択されたトランプを表向きにする
                 $image.src = this.createTrumpImagePath(cardNumber);
+
+                // 選択されたカードの情報（場所）を配列に格納しておく
+                this.selectCardList.push(cardNumber);
+                this.selectCardCount++;
+
+                if (this.selectCardCount !== Constant.SelectableNumber) {
+                    // カードが 2 枚選択されていない場合は、ここで処理終了
+                    return;
+                }
+
+                this.isSelectable = false;
             });
         });
 

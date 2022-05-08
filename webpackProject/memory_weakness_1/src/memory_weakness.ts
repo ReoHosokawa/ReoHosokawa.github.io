@@ -17,7 +17,6 @@ export class MemoryWeakness {
         this.pairCountArea = <HTMLDivElement>document.getElementById("pairCountArea");
         this.missCountArea = <HTMLDivElement>document.getElementById("missCountArea");
         this.messageArea = <HTMLDivElement>document.getElementById("messageArea");
-        this.cardList = [];
     }
 
     // -------------------------------------
@@ -28,6 +27,7 @@ export class MemoryWeakness {
      * ゲーム画面を初期化する
      */
     public init = () => {
+        this.cardList = [];
         const filePath = Constant.ImageFolderPath + Constant.DefaultCardFileName + Constant.ImageExtension;
         this.cardImages.forEach($image => {
             // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする

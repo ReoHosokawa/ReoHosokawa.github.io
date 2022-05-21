@@ -152,7 +152,7 @@ export class MemoryWeakness {
         if (isJoker) {
             // ジョーカーの場合
             // ジョーカー用のカードは 2 種類しかないので、 1 と 2 のみを格納した配列を用意する
-            const jokerTypes = Linq.range(1, 2).toArray();
+            const jokerTypes = this.createNumberList(1, 2);
             return Linq.from(jokerTypes).shuffle().toArray();
         }
 

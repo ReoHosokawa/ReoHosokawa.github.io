@@ -31,6 +31,8 @@ export class MemoryWeakness {
         this.selectCardCount = 0;
         this.selectCardList = [];
         this.isSelectable = true;
+        this.pairCount = 0;
+        this.missCount = 0;
 
         // 初期状態で表示するトランプの裏向き画像パス
         const filePath = Constant.ImageFolderPath + Constant.DefaultCardFileName + Constant.ImageExtension;
@@ -274,4 +276,14 @@ export class MemoryWeakness {
      * カードは選択可能か
      */
     private isSelectable: boolean = true;
+
+    /**
+     * ペア数
+     */
+    private pairCount: number = 0;
+
+    /**
+     * ミス数
+     */
+    private missCount: number = 0;
 }

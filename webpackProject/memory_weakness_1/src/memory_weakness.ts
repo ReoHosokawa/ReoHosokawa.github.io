@@ -164,7 +164,7 @@ export class MemoryWeakness {
      * @param maxPair 最大ペア数
      * @returns ペア一覧
      */
-    private createPairList = (ranks: number[], maxPair: number): {"type": number, "value": number}[] => {
+    private createPairList = (ranks: number[], maxPair: number): { "type": number, "value": number }[] => {
         // トランプの絵札一覧
         const cardTypeList = Constant.CardTypeList;
         const types = this.createNumberList(0, cardTypeList.length - 1);

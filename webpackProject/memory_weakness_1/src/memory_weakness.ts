@@ -41,7 +41,7 @@ export class MemoryWeakness {
             $image.src = filePath;
 
             // トランプ画像がダブルクリックされた場合のイベント定義
-            $image.addEventListener("dblclick", e => {
+            $image.addEventListener("dblclick", async e => {
                 if (!this.isSelectable) {
                     return;
                 }
@@ -65,6 +65,34 @@ export class MemoryWeakness {
                 }
 
                 this.isSelectable = false;
+
+                const isPair = this.isPair();
+
+                // ペアかどうかで処理を分岐する
+                if (isPair) {
+                    this.showResultMessage(Constant.HitValue, Constant.HitClassName);
+                    this.pairCount++;
+                    this.pairCountArea.textContent = this.createPairCountValue(this.pairCount);
+                } else {
+                    this.showResultMessage(Constant.MissValue, Constant.MissClassName);
+                    this.missCount++;
+                    this.missCountArea.textContent = this.createMissCountValue(this.missCount);
+                    this.removeLife();
+                }
+
+                // 結果がすぐに消えないよう、1 秒間待機する
+                await this.sleep(1000);
+
+                // 再度トライできるように画面を整える
+                this.messageArea.classList.remove(Constant.HitClassName, Constant.MissClassName);
+                this.messageArea.textContent = this.createStatusMessage(this.missCount);
+                this.isSelectable = true;
+
+                // ペアだった場合は、該当のカードを選択不可に、ペアではなかった場合はカードを裏返す
+
+                // 選択中のカード情報をリセットする
+                this.selectCardCount = 0;
+                this.selectCardList = [];
             });
         });
 
@@ -197,6 +225,36 @@ export class MemoryWeakness {
     private removeLifeImages = () => {
         const $lifeImages = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.${Constant.LifeImageClassName}`);
         $lifeImages.forEach($life => this.lifeArea.removeChild($life));
+    }
+
+    /**
+     * ライフを削除する
+     */
+    private removeLife = () => {
+        const $lifeImage = <HTMLImageElement>document.getElementById(`life_${this.missCount}`);
+        $lifeImage.remove();
+    }
+
+    /**
+     * ペアが成立しているかどうか
+     * @returns ペアなら true、それ以外は false
+     */
+    private isPair = () => {
+        const firstCardNumber = this.cardList[this.selectCardList[0]].value;
+        const secondCardNumber = this.cardList[this.selectCardList[1]].value;
+        return firstCardNumber === secondCardNumber;
+    };
+
+    /**
+     * 結果メッセージを表示する
+     * @param message 表示するメッセージ
+     * @param classValue 追加するクラス（任意）
+     */
+    private showResultMessage = (message: string, classValue: string | null = null) => {
+        this.messageArea.textContent = message;
+        if (classValue !== null) {
+            this.messageArea.classList.add(classValue);
+        }
     }
 
     /**

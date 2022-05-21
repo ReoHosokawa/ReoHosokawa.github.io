@@ -92,7 +92,7 @@ export class MemoryWeakness {
      */
     private shuffleCards = () => {
         // トランプのランク一覧
-        const baseRanks = this.createRankList(Constant.StartCardNumber, Constant.EndCardNumber);
+        const baseRanks = this.createNumberList(Constant.StartCardNumber, Constant.EndCardNumber);
 
         // ランク一覧シャッフル
         const ranks = Linq.from(baseRanks).shuffle().toArray();
@@ -104,22 +104,12 @@ export class MemoryWeakness {
     }
 
     /**
-     * 指定された開始番号～終了番号までのランク一覧を生成する
-     * @param start トランプの開始番号
-     * @param end トランプの終了番号
-     * @returns トランプの開始番号 ～ トランプの終了番号までのランク一覧
+     * 指定された開始番号～終了番号までの連番一覧を生成する
+     * @param start 開始番号
+     * @param end 終了番号
+     * @returns 開始番号～終了番号までの連番一覧
      */
-    private createRankList = (start: number, end: number): number[] => {
-        return Linq.range(start, end).toArray();
-    }
-
-    /**
-     * 指定された開始番号～終了番号までのタイプ番号一覧を生成する
-     * @param start カードタイプの開始番号
-     * @param end カードタイプの終了番号
-     * @returns カードタイプ番号一覧
-     */
-    private createTypeList = (start: number, end: number): number[] => {
+    private createNumberList = (start: number, end: number): number[] => {
         return Linq.range(start, end).toArray();
     }
 
@@ -132,7 +122,7 @@ export class MemoryWeakness {
     private createPairList = (ranks: number[], maxPair: number): {"type": number, "value": number}[] => {
         // トランプの絵札一覧
         const cardTypeList = Constant.CardTypeList;
-        const types = this.createTypeList(0, cardTypeList.length - 1);
+        const types = this.createNumberList(0, cardTypeList.length - 1);
 
         const pairList = new Array();
         for (let i = 0; i < maxPair; i++) {

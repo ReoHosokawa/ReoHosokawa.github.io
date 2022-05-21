@@ -100,4 +100,32 @@ export class Constant {
             { "key": "Joker", "value": "x" },
         ];
     }
+
+    /**
+     * 正解時に表示するメッセージ
+     */
+    static get HitValue() {
+        return "当たり！";
+    }
+
+    /**
+     * 不正解時に表示するメッセージ
+     */
+    static get MissValue() {
+        return "はずれ…";
+    }
+
+    /**
+     * 正解時にセットするクラス名
+     */
+    static get HitClassName() {
+        return "hit";
+    }
+
+    /**
+     * 不正解時にセットするクラス名
+     */
+    static get MissClassName() {
+        return "miss";
+    }
 }

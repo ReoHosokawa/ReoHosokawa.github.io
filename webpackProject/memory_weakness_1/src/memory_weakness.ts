@@ -228,6 +228,13 @@ export class MemoryWeakness {
      */
     private zeroPadding = (target: number, len: number): string => ("0".repeat(len) + target).slice(-len);
 
+    /**
+     * 指定された時間、処理をストップさせる
+     * @param ms 停止したい時間（ミリ秒）
+     * @returns なし
+     */
+    private sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
     // -------------------------------------
     // フィールド変数
     // -------------------------------------

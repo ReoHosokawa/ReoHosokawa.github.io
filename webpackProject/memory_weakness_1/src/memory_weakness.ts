@@ -41,59 +41,7 @@ export class MemoryWeakness {
             $image.src = filePath;
 
             // トランプ画像がダブルクリックされた場合のイベント定義
-            $image.addEventListener("dblclick", async e => {
-                if (!this.isSelectable) {
-                    return;
-                }
-
-                const cardNumber = Number($image.dataset.cardNumber);
-                if (this.selectCardCount === 1 && this.selectCardList[0] === cardNumber) {
-                    // すでにカードが 1 枚選択されている場合、今回選択されたカードがひとつ前に選択されたカードと
-                    // 同じ場所だった場合は何もしない
-                    return;
-                }
-                // 選択されたトランプを表向きにする
-                $image.src = this.createTrumpImagePath(cardNumber);
-
-                // 選択されたカードの情報（場所）を配列に格納しておく
-                this.selectCardList.push(cardNumber);
-                this.selectCardCount++;
-
-                if (this.selectCardCount !== Constant.SelectableNumber) {
-                    // カードが 2 枚選択されていない場合は、ここで処理終了
-                    return;
-                }
-
-                this.isSelectable = false;
-
-                const isPair = this.isPair();
-
-                // ペアかどうかで処理を分岐する
-                if (isPair) {
-                    this.showResultMessage(Constant.HitValue, Constant.HitClassName);
-                    this.pairCount++;
-                    this.pairCountArea.textContent = this.createPairCountValue(this.pairCount);
-                } else {
-                    this.showResultMessage(Constant.MissValue, Constant.MissClassName);
-                    this.missCount++;
-                    this.missCountArea.textContent = this.createMissCountValue(this.missCount);
-                    this.removeLife();
-                }
-
-                // 結果がすぐに消えないよう、1 秒間待機する
-                await this.sleep(1000);
-
-                // 再度トライできるように画面を整える
-                this.messageArea.classList.remove(Constant.HitClassName, Constant.MissClassName);
-                this.messageArea.textContent = this.createStatusMessage(this.missCount);
-                this.isSelectable = true;
-
-                // ペアだった場合は、該当のカードを選択不可に、ペアではなかった場合はカードを裏返す
-
-                // 選択中のカード情報をリセットする
-                this.selectCardCount = 0;
-                this.selectCardList = [];
-            });
+            $image.addEventListener("dblclick", this.selectCard);
         });
 
         // ライフ画像要素が設定されている可能性があるので、いったん削除する
@@ -116,6 +64,73 @@ export class MemoryWeakness {
     // -------------------------------------
     // プライベートメソッド
     // -------------------------------------
+
+    /**
+     * カードが選択された場合に実行される処理
+     * @param e イベント
+     * @returns なし
+     */
+    private selectCard = async (e: MouseEvent) => {
+        if (!this.isSelectable) {
+            return;
+        }
+
+        const target = e.target;
+        if (target === null) {
+            return;
+        }
+
+        const $image = <HTMLImageElement>target;
+
+        const cardNumber = Number($image.dataset.cardNumber);
+        if (this.selectCardCount === 1 && this.selectCardList[0] === cardNumber) {
+            // すでにカードが 1 枚選択されている場合、今回選択されたカードがひとつ前に選択されたカードと
+            // 同じ場所だった場合は何もしない
+            return;
+        }
+        // 選択されたトランプを表向きにする
+        $image.src = this.createTrumpImagePath(cardNumber);
+
+        // 選択されたカードの情報（場所）を配列に格納しておく
+        this.selectCardList.push(cardNumber);
+        this.selectCardCount++;
+
+        if (this.selectCardCount !== Constant.SelectableNumber) {
+            // カードが 2 枚選択されていない場合は、ここで処理終了
+            return;
+        }
+
+        this.isSelectable = false;
+
+        const isPair = this.isPair();
+
+        // ペアかどうかで処理を分岐する
+        if (isPair) {
+            this.showResultMessage(Constant.HitValue, Constant.HitClassName);
+            this.pairCount++;
+            this.pairCountArea.textContent = this.createPairCountValue(this.pairCount);
+        } else {
+            this.showResultMessage(Constant.MissValue, Constant.MissClassName);
+            this.missCount++;
+            this.missCountArea.textContent = this.createMissCountValue(this.missCount);
+            this.removeLife();
+        }
+
+        // 結果がすぐに消えないよう、1 秒間待機する
+        await this.sleep(1000);
+
+        // 再度トライできるように画面を整える
+        this.messageArea.classList.remove(Constant.HitClassName, Constant.MissClassName);
+        this.messageArea.textContent = this.createStatusMessage(Constant.MaxMissNumber - this.missCount);
+        this.isSelectable = true;
+
+        // ペアだった場合は、該当のカードを選択不可に、ペアではなかった場合はカードを裏返す
+        isPair ? this.setCardDisabled() : this.turnCardFaceDown();
+
+        // 選択中のカード情報をリセットする
+        this.selectCardCount = 0;
+        this.selectCardList = [];
+    }
 
     /**
      * トランプのカードをシャッフルする
@@ -254,6 +269,28 @@ export class MemoryWeakness {
         this.messageArea.textContent = message;
         if (classValue !== null) {
             this.messageArea.classList.add(classValue);
+        }
+    }
+
+    /**
+     * 選択中のカードを選択不可にする
+     */
+    private setCardDisabled = () => {
+        for (const cardNumber of this.selectCardList) {
+            const $card = <HTMLImageElement>document.getElementById(`card_${cardNumber + 1}`);
+            $card.removeEventListener("dblclick", this.selectCard);
+        }
+    }
+
+    /**
+     * 選択中のカードを裏向きにする
+     */
+    private turnCardFaceDown = () => {
+        // 裏向きカードのパス
+        const filePath = Constant.ImageFolderPath + Constant.DefaultCardFileName + Constant.ImageExtension;
+        for (const cardNumber of this.selectCardList) {
+            const $card = <HTMLImageElement>document.getElementById(`card_${cardNumber + 1}`);
+            $card.src = filePath;
         }
     }
 

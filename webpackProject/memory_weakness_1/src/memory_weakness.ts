@@ -121,6 +121,15 @@ export class MemoryWeakness {
         // 結果がすぐに消えないよう、1 秒間待機する
         await this.sleep(1000);
 
+        if (this.missCount === Constant.MaxMissNumber) {
+            // ミス数が最大ミス可能回数に達した場合は、ゲームオーバー扱いとする
+            this.isGameOver = true;
+            this.messageArea.textContent = "ゲームオーバー";
+            this.messageArea.classList.remove(Constant.MissClassName);
+            this.flipAllCards();
+            return;
+        }
+
         // 再度トライできるように画面を整える
         this.messageArea.classList.remove(Constant.HitClassName, Constant.MissClassName);
         this.messageArea.textContent = this.createStatusMessage(Constant.MaxMissNumber - this.missCount);
@@ -295,6 +304,16 @@ export class MemoryWeakness {
             const $card = <HTMLImageElement>document.getElementById(`card_${cardNumber + 1}`);
             $card.src = filePath;
         }
+    }
+
+    /**
+     * 裏向きになっているすべてのカードを表向きにする
+     */
+    private flipAllCards = () => {
+        // 裏向きになっているカード一覧
+        // ※厳密には以下のクエリセレクター指定だと、現在選択中のカードも含まれてしまうが、ここでは気にしない
+        const $targetList = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.cardImage:not(.${Constant.GrayOutClassName})`);
+        $targetList.forEach($card => $card.src = this.createTrumpImagePath(Number($card.dataset.cardNumber)));
     }
 
     /**

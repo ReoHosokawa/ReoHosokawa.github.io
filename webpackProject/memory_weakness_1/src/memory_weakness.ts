@@ -107,11 +107,11 @@ export class MemoryWeakness {
 
         // ペアかどうかで処理を分岐する
         if (isPair) {
-            this.showResultMessage(Constant.HitValue, Constant.HitClassName);
+            this.showResultMessage("当たり！", Constant.HitClassName);
             this.pairCount++;
             this.pairCountArea.textContent = this.createPairCountValue(this.pairCount);
         } else {
-            this.showResultMessage(Constant.MissValue, Constant.MissClassName);
+            this.showResultMessage("はずれ…", Constant.MissClassName);
             this.missCount++;
             this.missCountArea.textContent = this.createMissCountValue(this.missCount);
             this.removeLife();

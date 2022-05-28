@@ -114,4 +114,11 @@ export class Constant {
     static get MissClassName() {
         return "miss";
     }
+
+    /**
+     * グレイスケールデザインを適用するためのクラス名
+     */
+    static get GrayOutClassName() {
+        return "grayOut";
+    }
 }

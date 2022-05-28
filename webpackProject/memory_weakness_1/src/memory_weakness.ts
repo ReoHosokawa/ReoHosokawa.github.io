@@ -281,6 +281,7 @@ export class MemoryWeakness {
         for (const cardNumber of this.selectCardList) {
             const $card = <HTMLImageElement>document.getElementById(`card_${cardNumber + 1}`);
             $card.removeEventListener("dblclick", this.selectCard);
+            $card.classList.add(Constant.GrayOutClassName);
         }
     }
 

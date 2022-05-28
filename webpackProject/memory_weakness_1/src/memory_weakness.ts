@@ -31,6 +31,7 @@ export class MemoryWeakness {
         this.selectCardCount = 0;
         this.selectCardList = [];
         this.isSelectable = true;
+        this.isGameOver = false;
         this.pairCount = 0;
         this.missCount = 0;
 
@@ -378,6 +379,11 @@ export class MemoryWeakness {
      * カードは選択可能か
      */
     private isSelectable: boolean = true;
+
+    /**
+     * ゲームオーバーかどうか
+     */
+    private isGameOver: boolean = false;
 
     /**
      * ペア数

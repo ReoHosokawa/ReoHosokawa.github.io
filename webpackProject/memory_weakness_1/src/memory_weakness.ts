@@ -72,7 +72,8 @@ export class MemoryWeakness {
      * @returns なし
      */
     private selectCard = async (e: MouseEvent) => {
-        if (!this.isSelectable) {
+        if (!this.isSelectable || this.isGameOver) {
+            // カードが選択不可状態、もしくはゲームオーバーになっている場合は、何もしない
             return;
         }
 

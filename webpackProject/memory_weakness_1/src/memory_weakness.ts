@@ -125,8 +125,17 @@ export class MemoryWeakness {
         // 結果がすぐに消えないよう、1 秒間待機する
         await this.sleep(1000);
 
+        if (this.pairCount === Constant.MaxPair) {
+            // ペア数が最大ペア数に達した場合は、ゲームクリアとする
+            this.isGameClear = true;
+            this.messageArea.innerHTML = "ゲームクリア！<br/>おめでとう！";
+            this.messageArea.classList.remove(Constant.HitClassName);
+            this.setCardDisabled();
+            return;
+        }
+
         if (this.missCount === Constant.MaxMissNumber) {
-            // ミス数が最大ミス可能回数に達した場合は、ゲームオーバー扱いとする
+            // ミス数が最大ミス可能回数に達した場合は、ゲームオーバーとする
             this.isGameOver = true;
             this.messageArea.textContent = "ゲームオーバー";
             this.messageArea.classList.remove(Constant.MissClassName);

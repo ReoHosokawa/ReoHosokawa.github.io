@@ -8,6 +8,7 @@ export class MemoryWeakness {
     // -------------------------------------
     // 構築・消滅
     // -------------------------------------
+
     /**
      * コンストラクタ
      */
@@ -17,6 +18,7 @@ export class MemoryWeakness {
         this.pairCountArea = <HTMLDivElement>document.getElementById("pairCountArea");
         this.missCountArea = <HTMLDivElement>document.getElementById("missCountArea");
         this.messageArea = <HTMLDivElement>document.getElementById("messageArea");
+        this.resetButton = <HTMLInputElement>document.getElementById("resetButton");
     }
 
     // -------------------------------------
@@ -46,6 +48,8 @@ export class MemoryWeakness {
             $image.addEventListener("dblclick", this.selectCard);
         });
 
+        // 「リセット」ボタンクリック時のイベント定義
+        this.resetButton.addEventListener("click", this.resetGame);
         // ライフ画像要素が設定されている可能性があるので、いったん削除する
         this.removeLifeImages();
         // ライフの追加
@@ -154,6 +158,29 @@ export class MemoryWeakness {
         // 選択中のカード情報をリセットする
         this.selectCardCount = 0;
         this.selectCardList = [];
+    }
+
+    /**
+     * リセットボタンが押された場合の処理
+     * @returns 
+     */
+    private resetGame = () => {
+        if (this.pairCount === 0 && this.missCount === 0 && this.selectCardCount === 0) {
+            // ゲームがプレイされていない場合は、何もしない
+            return;
+        }
+
+        if (this.pairCount === Constant.MaxPair || this.missCount === Constant.MaxMissNumber) {
+            // プレイが終了している場合は、そのままリセットする
+            this.init();
+            return;
+        }
+
+        if (!window.confirm("まだプレイ中ですが、リセットしますか？")) {
+            return;
+        }
+
+        this.init();
     }
 
     /**
@@ -393,6 +420,11 @@ export class MemoryWeakness {
      * メッセージ表示要素
      */
     private messageArea: HTMLDivElement;
+
+    /**
+     * リセットボタン要素
+     */
+    private resetButton: HTMLInputElement;
 
     /**
      * シャッフル後のカード情報一覧

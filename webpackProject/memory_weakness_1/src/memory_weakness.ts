@@ -50,10 +50,13 @@ export class MemoryWeakness {
 
         // 「リセット」ボタンクリック時のイベント定義
         this.resetButton.addEventListener("click", this.resetGame);
+
         // ライフ画像要素が設定されている可能性があるので、いったん削除する
         this.removeLifeImages();
         // ライフの追加
         this.addLifeImages();
+
+        this.removeGrayOut();
 
         const defaultCount = 0;
         // ペア数
@@ -299,6 +302,14 @@ export class MemoryWeakness {
     private removeLife = () => {
         const $lifeImage = <HTMLImageElement>document.getElementById(`life_${this.missCount}`);
         $lifeImage.remove();
+    }
+
+    /**
+     * img 要素に設定されたグレイスケール用のクラスを削除する
+     */
+    private removeGrayOut = () => {
+        const $targetList = <NodeListOf<HTMLImageElement>> document.querySelectorAll(`.${Constant.GrayOutClassName}`);
+        $targetList.forEach($target => $target.classList.remove(Constant.GrayOutClassName));
     }
 
     /**

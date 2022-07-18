@@ -116,7 +116,9 @@ export class Constant {
     }
 
     /**
-     * グレイスケールデザインを適用するためのクラス名
+
+    /**
+     * グレーアウトデザインを適用するためのクラス名
      */
     static get GrayOutClassName() {
         return "grayOut";

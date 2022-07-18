@@ -305,7 +305,7 @@ export class MemoryWeakness {
     }
 
     /**
-     * img 要素に設定されたグレイスケール用のクラスを削除する
+     * img 要素に設定されたグレーアウト用のクラスを削除する
      */
     private removeGrayOut = () => {
         const $targetList = <NodeListOf<HTMLImageElement>> document.querySelectorAll(`.${Constant.GrayOutClassName}`);

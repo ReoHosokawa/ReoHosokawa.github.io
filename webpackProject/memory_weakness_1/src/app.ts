@@ -8,3 +8,7 @@ const appInit = () => {
 }
 
 window.onload = appInit;
+
+// 範囲選択を無効化する
+document.addEventListener("selectstart", (e: Event) => e.preventDefault());
+document.addEventListener("touchstart", (e: TouchEvent) => e.preventDefault());

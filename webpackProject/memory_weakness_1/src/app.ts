@@ -5,6 +5,9 @@ import "./scss/index.scss";
 const appInit = () => {
     const memoryWeakness = new MemoryWeakness();
     memoryWeakness.init();
+
+    // スマホで操作時、ダブルタップで拡大してしまうのを防止する
+    document.addEventListener("dblclick", (e: MouseEvent) => e.preventDefault(), { passive: false });
 }
 
 window.onload = appInit;

@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
+        projectName: ["lucky7_1", "lucky7_2"]
     
     steps:
     - uses: actions/checkout@v3
@@ -26,7 +27,9 @@ jobs:
       run: |
         yarn install
     - name: Build
-      run: yarn build
+      run: |
+        cd ${{ matrix.projectName }}
+        yarn build
       
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3

@@ -31,7 +31,7 @@ jobs:
         yarn global add mini-css-extract-plugin
     - name: Build
       run: |
-        cd ../${{ matrix.projectName }}
+        cd ${{ matrix.projectName }}
         yarn build
       
     - name: Deploy

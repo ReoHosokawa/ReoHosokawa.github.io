@@ -26,6 +26,7 @@ jobs:
     - name: Install
       run: |
         yarn install
+        yarn global add webpack-cli
         yarn global add webpack
     - name: Build
       run: |

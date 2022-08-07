@@ -33,6 +33,7 @@ jobs:
       run: |
         cd ${{ matrix.projectName }}
         yarn build
+        cd ../
       
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3

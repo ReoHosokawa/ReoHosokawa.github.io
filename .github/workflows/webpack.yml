@@ -28,6 +28,7 @@ jobs:
         yarn install
         yarn global add webpack-cli
         yarn global add webpack
+        yarn global add mini-css-extract-plugin
     - name: Build
       run: |
         cd ${{ matrix.projectName }}

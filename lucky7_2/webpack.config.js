@@ -1,18 +1,18 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const outputPath = path.join(__dirname, '../../TypeScript/Lucky7_2');
+const outputPath = path.join(__dirname, 'dist');
 module.exports = {
     // モジュールバンドルを行う起点となるファイルの指定
     // 指定できる値としては、ファイル名の文字列や、それを並べた配列やオブジェクト
     // 下記はオブジェクトとして指定した例
     entry: {
-        bundle: './src/app.ts'
+        lucky7_2: './src/app.ts'
     },
     output: {
         // モジュールバンドルを行った結果を出力する場所やファイル名の指定
         // "__dirname" はこのファイルが存在するディレクトリを表す node.js で定義済みの定数
         path: outputPath,
-        filename: '[name].js'   // [name] は entry で記述した名前（この例では bundle）が入る
+        filename: '[name].js'   // [name] は entry で記述した名前（この例では licky7_2）が入る
     },
     // モジュールとして扱いたいファイルの拡張子を指定する
     // 例えば「import Foo from './foo'」という記述に対して "foo.ts" という名前のファイルをモジュールとして探す

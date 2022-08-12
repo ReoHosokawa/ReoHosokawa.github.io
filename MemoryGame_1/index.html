@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=700px">
+    <!-- キャッシュを無効にする設定 -->
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <title>神経衰弱</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./memoryWeakness.js"></script>
+</head>
+
+<body>
+    <div id="mainContainer">
+        <div id="titleArea">☆神経衰弱☆</div>
+        <div id="subtitleArea">カードをめくるときはダブルクリック！！</div>
+        <div id="lifeArea">
+            <span>ライフ：</span>
+        </div>
+        <div id="leftPanel">
+            <div id="cardArea">
+                <div class="table">
+                    <div class="tableRow">
+                        <img src="" alt="" id="card_1" class="cardImage" data-card-number="0">
+                        <img src="" alt="" id="card_2" class="cardImage" data-card-number="1">
+                        <img src="" alt="" id="card_3" class="cardImage" data-card-number="2">
+                        <img src="" alt="" id="card_4" class="cardImage" data-card-number="3">
+                        <img src="" alt="" id="card_5" class="cardImage" data-card-number="4">
+                    </div>
+                    <div class="tableRow">
+                        <img src="" alt="" id="card_6" class="cardImage" data-card-number="5">
+                        <img src="" alt="" id="card_7" class="cardImage" data-card-number="6">
+                        <img src="" alt="" id="card_8" class="cardImage" data-card-number="7">
+                        <img src="" alt="" id="card_9" class="cardImage" data-card-number="8">
+                        <img src="" alt="" id="card_10" class="cardImage" data-card-number="9">
+                    </div>
+                    <div class="tableRow">
+                        <img src="" alt="" id="card_11" class="cardImage" data-card-number="10">
+                        <img src="" alt="" id="card_12" class="cardImage" data-card-number="11">
+                        <img src="" alt="" id="card_13" class="cardImage" data-card-number="12">
+                        <img src="" alt="" id="card_14" class="cardImage" data-card-number="13">
+                        <img src="" alt="" id="card_15" class="cardImage" data-card-number="14">
+                    </div>
+                    <div class="tableRow">
+                        <img src="" alt="" id="card_16" class="cardImage" data-card-number="15">
+                        <img src="" alt="" id="card_17" class="cardImage" data-card-number="16">
+                        <img src="" alt="" id="card_18" class="cardImage" data-card-number="17">
+                        <img src="" alt="" id="card_19" class="cardImage" data-card-number="18">
+                        <img src="" alt="" id="card_20" class="cardImage" data-card-number="19">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="rightPanel">
+            <div id="pairCountArea"></div>
+            <div id="missCountArea"></div>
+            <div id="messageArea"></div>
+            <div id="resetButtonArea">
+                <input type="button" value="リセット" id="resetButton">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

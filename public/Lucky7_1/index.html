@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta name="viewport" content="width=610"></meta>
+    <meta charset="utf-8">
+    <title>Lucky 7</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="lucky7_1.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="titleArea">Lucky 7</div>
+        <div id="messageArea"></div>
+        <div id="mainArea">
+            <div id="buttonContent">
+                <input type="button" id="btnSpin" value="スピン">
+                <input type="button" id="btnStop" value="ストップ">
+                <input type="button" id="btnReset" value="リセット">
+            </div>
+            <div id="slotContent">
+                <div id="spinArea">
+                    <span class="spinLabel"></span>
+                    <span class="spinLabel"></span>
+                    <span class="spinLabel"></span>
+                </div>
+                <div id="imageArea">
+                    <img id="imgCoin" src="./images/Coins.BMP">
+                </div>
+            </div>
+            <div id="spinCountArea">
+                <label>スピン残回数</label>
+                <label id="remainingCount"></label>
+            </div>
+        </div>
+        <div id="resultArea">
+            <span id="score"></span>
+        </div>
+    </div>
+</body>
+
+</html>

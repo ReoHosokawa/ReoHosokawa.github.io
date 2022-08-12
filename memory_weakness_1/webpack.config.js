@@ -1,6 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const outputPath = path.join(__dirname, 'dist');
+const outputPath = path.join(__dirname, '../public/MemoryGame_1');
 module.exports = {
     // モジュールバンドルを行う起点となるファイルの指定
     // 指定できる値としては、ファイル名の文字列や、それを並べた配列やオブジェクト

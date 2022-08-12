@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=610px">
+    </meta>
+    <!-- キャッシュを無効にする設定 -->
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta charset="utf-8">
+    <title>Lucky 7</title>
+    <!-- Google Fonts から読み込み -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="lucky7_2.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="titleArea">Lucky 7</div>
+        <div id="messageArea"></div>
+        <div id="mainArea">
+            <div id="buttonContent">
+                <div class="toggle toggle--push toggle--push--glow">
+                    <input type="checkbox" id="toggle--push--glow" class="toggle--checkbox">
+                    <label id="lblStart" class="toggle--btn" for="toggle--push--glow" data-label-on="on"
+                        data-label-off="off">START</label>
+                </div>
+                <div class="toggle toggle--push toggle--push--glow">
+                    <input type="checkbox" id="toggle--push--glow--reset" class="toggle--checkbox">
+                    <label class="toggle--btn--reset" for="toggle--push--glow--reset" data-label-on="on"
+                        data-label-off="off">RESET</label>
+                </div>
+                <!-- <div id="normalButtonArea">
+                    <input type="button" id="btnSpin" value="スピン">
+                    <input type="button" id="btnReset" value="リセット">
+                </div> -->
+            </div>
+            <div id="slotContent">
+                <div id="spinArea">
+                    <span id="spin1" class="spinLabel"></span>
+                    <span id="spin2" class="spinLabel"></span>
+                    <span id="spin3" class="spinLabel"></span>
+                </div>
+                <div id="buttonArea">
+                    <a id="btnStop1" class="btn-circle-3d-emboss btnStops"></a>
+                    <a id="btnStop2" class="btn-circle-3d-emboss btnStops"></a>
+                    <a id="btnStop3" class="btn-circle-3d-emboss btnStops"></a>
+                </div>
+                <div id="imageArea">
+                    <img id="imgCoin" src="./images/Coins.BMP">
+                </div>
+            </div>
+            <div id="spinCountArea">
+                <label>スピン残回数</label>
+                <label id="remainingCount"></label>
+            </div>
+        </div>
+        <div id="scoreArea">
+            <div id="pointBalloon" class="balloon"></div>
+            <div id="resultArea">
+                <span id="score"></span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

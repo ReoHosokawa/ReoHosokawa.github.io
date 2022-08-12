@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        projectName: ["lucky7_1", "lucky7_2"]
+        projectName: ["lucky7_1", "lucky7_2", "memory_weakness_1"]
     
     steps:
     - uses: actions/checkout@v3

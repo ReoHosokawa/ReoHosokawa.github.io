@@ -1,7 +1,11 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const outputPath = path.join(__dirname, '../public/Lucky7_1');
-module.exports = {
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// 1. `process.env.NODE_ENV` で引数の中身を受け取り、true / false を判定する
+const isProduction = process.env.NODE_ENV === 'production';
+
+// 2. 共通設定が書かれた config オブジェクトを定義
+const config = {
     // モジュールバンドルを行う起点となるファイルの指定
     // 指定できる値としては、ファイル名の文字列や、それを並べた配列やオブジェクト
     // 下記はオブジェクトとして指定した例
@@ -19,10 +23,6 @@ module.exports = {
     // デフォルトは ['.js', '.json']
     resolve: {
         extensions: ['.ts', '.js']
-    },
-    devServer: {
-        // webpack-dev-server の公開フォルダ
-        contentBase: outputPath
     },
     // モジュールに適用するルールの設定（ここではローダーの設定を行うことが多い）
     module: {
@@ -55,4 +55,23 @@ module.exports = {
             filename: 'css/style.css',
         })
     ]
+}
+
+// 3. 手順 1 で得た値を使って分岐させ、共通設定に個別の設定を追加してから return する
+module.exports = () => {
+    if (isProduction) {
+        config.mode = 'production';
+        // 本番環境用の設定
+    } else {
+        config.mode = 'development';
+        // 開発環境用の設定
+        config.devtool = 'inline-source-map';
+        config.devServer = {
+            // webpack-dev-server の公開フォルダ
+            contentBase: outputPath
+        }
+    }
+
+    // 最後に、共通部分にいろいろ書き加えた後の config オブジェクトを返す
+    return config;
 }

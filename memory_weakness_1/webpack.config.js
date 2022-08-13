@@ -1,28 +1,28 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const outputPath = path.join(__dirname, '../public/MemoryGame_1');
-module.exports = {
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// 1. `process.env.NODE_ENV` で引数の中身を受け取り、true / false を判定する
+const isProduction = process.env.NODE_ENV === 'production';
+
+// 2. 共通設定が書かれた config オブジェクトを定義
+const config = {
     // モジュールバンドルを行う起点となるファイルの指定
     // 指定できる値としては、ファイル名の文字列や、それを並べた配列やオブジェクト
     // 下記はオブジェクトとして指定した例
     entry: {
-        memoryWeakness: './src/app.ts'
+        memoryGame1: './src/app.ts'
     },
     output: {
         // モジュールバンドルを行った結果を出力する場所やファイル名の指定
         // "__dirname" はこのファイルが存在するディレクトリを表す node.js で定義済みの定数
         path: outputPath,
-        filename: '[name].js'   // [name] は entry で記述した名前（この例では bundle）が入る
+        filename: '[name].js'   // [name] は entry で記述した名前（この例では memoryGame1）が入る
     },
     // モジュールとして扱いたいファイルの拡張子を指定する
     // 例えば「import Foo from './foo'」という記述に対して "foo.ts" という名前のファイルをモジュールとして探す
     // デフォルトは ['.js', '.json']
     resolve: {
         extensions: ['.ts', '.js']
-    },
-    devServer: {
-        // webpack-dev-server の公開フォルダ
-        contentBase: outputPath
     },
     // モジュールに適用するルールの設定（ここではローダーの設定を行うことが多い）
     module: {
@@ -52,7 +52,26 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'css/style.css', // /dist/css/style.css に出力
+            filename: 'css/style.css',
         })
     ]
+}
+
+// 3. 手順 1 で得た値を使って分岐させ、共通設定に個別の設定を追加してから return する
+module.exports = () => {
+    if (isProduction) {
+        config.mode = 'production';
+        // 本番環境用の設定
+    } else {
+        config.mode = 'development';
+        // 開発環境用の設定
+        config.devtool = 'inline-source-map';
+        config.devServer = {
+            // webpack-dev-server の公開フォルダ
+            contentBase: outputPath
+        }
+    }
+
+    // 最後に、共通部分にいろいろ書き加えた後の config オブジェクトを返す
+    return config;
 }

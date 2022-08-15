@@ -23,16 +23,25 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Git setting
+      run: |
+        git config --local user.email "story.0206.0803@gmail.com"
+        git config --local user.name "ReoHosokawa"
+
     - name: Install
       run: |
         yarn install
         yarn global add webpack-cli
         yarn global add webpack
-    - name: Build
+    - name: Build & Commit
       run: |
         cd ${{ matrix.projectName }}
         yarn add --dev mini-css-extract-plugin
         yarn build:prod
+        git add .
+        git commit -m "${{ matrix.projectName }} build" -a
+        git pull
+        git push origin master
       
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3

@@ -38,9 +38,8 @@ jobs:
         cd ${{ matrix.projectName }}
         yarn add --dev mini-css-extract-plugin
         yarn build:prod
-        git add .
+        git add ../public/*
         git commit -m "${{ matrix.projectName }} build" -a
-        git branch
         git pull
         git push origin main
       

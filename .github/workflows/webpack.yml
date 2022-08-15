@@ -41,7 +41,7 @@ jobs:
         git add .
         git commit -m "${{ matrix.projectName }} build" -a
         git pull
-        git push origin master
+        git push origin main
       
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3

@@ -4,7 +4,7 @@ import "./scss/index.scss";
 
 /**
  * タッチ対応デバイスかどうか
- * @returns タッチ操作可能なら true 、それ以外は false
+ * @returns タッチ操作可能なら true 、それ以外は false を返却する
  */
 const isTouchDevice = () => typeof window.ontouchstart === "object";
 

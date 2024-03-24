@@ -1,5 +1,5 @@
 const path = require('path');
-const outputPath = path.join(__dirname, '../public/MemoryGame_1');
+const outputPath = path.join(__dirname, '../public/memoryGame_2');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // 1. `process.env.NODE_ENV` で引数の中身を受け取り、true / false を判定する
 const isProduction = process.env.NODE_ENV === 'production';
@@ -10,13 +10,13 @@ const config = {
     // 指定できる値としては、ファイル名の文字列や、それを並べた配列やオブジェクト
     // 下記はオブジェクトとして指定した例
     entry: {
-        memoryGame1: './src/app.ts'
+        memoryGame2: './src/app.ts'
     },
     output: {
         // モジュールバンドルを行った結果を出力する場所やファイル名の指定
         // "__dirname" はこのファイルが存在するディレクトリを表す node.js で定義済みの定数
         path: outputPath,
-        filename: '[name].js'   // [name] は entry で記述した名前（この例では memoryGame1）が入る
+        filename: '[name].js'   // [name] は entry で記述した名前（この例では memoryGame2）が入る
     },
     // モジュールとして扱いたいファイルの拡張子を指定する
     // 例えば「import Foo from './foo'」という記述に対して "foo.ts" という名前のファイルをモジュールとして探す

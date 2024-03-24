@@ -1,1 +1,4 @@
+# node のモジュール格納用フォルダは Git 管理対象外
 */node_modules/
+# VS Code の設定フォルダは Git 管理対象外
+.vscode/

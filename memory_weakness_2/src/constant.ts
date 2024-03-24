@@ -1,3 +1,4 @@
+import { SelectedTrumpCardNumbers } from "./types/selected_trump_card_numbers";
 
 /**
  * 定数クラス
@@ -120,5 +121,15 @@ export class Constant {
      */
     static get GrayOutClassName(): string {
         return "grayOut";
+    }
+
+    /**
+     * 選択中のカード情報初期値
+     */
+    static get DefaultSelectedCardNumbers(): SelectedTrumpCardNumbers {
+        return {
+            first: -1,
+            second: -1,
+        };
     }
 }

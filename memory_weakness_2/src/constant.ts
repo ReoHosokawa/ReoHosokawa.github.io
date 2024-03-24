@@ -104,23 +104,21 @@ export class Constant {
     /**
      * 正解時にセットするクラス名
      */
-    static get HitClassName() {
+    static get HitClassName(): string {
         return "hit";
     }
 
     /**
      * 不正解時にセットするクラス名
      */
-    static get MissClassName() {
+    static get MissClassName(): string {
         return "miss";
     }
 
     /**
-
-    /**
      * グレーアウトデザインを適用するためのクラス名
      */
-    static get GrayOutClassName() {
+    static get GrayOutClassName(): string {
         return "grayOut";
     }
 }

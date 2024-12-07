@@ -2,13 +2,6 @@ import { MemoryWeaknessDomItems } from './types/memory_weakness_dom_items';
 import { addLifeImages, init } from "./memory_weakness";
 import "./scss/index.scss";
 
-
-
-/**
- * 神経衰弱用 DOM 要素格納用変数
- */
-let domItems: MemoryWeaknessDomItems;
-
 /**
  * タッチ対応デバイスかどうか
  * @returns タッチ操作可能なら true 、それ以外は false を返却する
@@ -56,10 +49,10 @@ const readDomItems = (): MemoryWeaknessDomItems | null => {
 }
 
 const appInit = () => {
-    domItems = readDomItems();
-
-    // ライフ画像を画面に追加する
-    addLifeImages(domItems);
+    const domItems = readDomItems();
+    if (domItems === null) {
+        return;
+    }
 
     init(domItems);
 

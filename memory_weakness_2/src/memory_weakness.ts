@@ -43,7 +43,7 @@ let missCount: number;
  * @param targetCardNumber 対象のカード番号
  * @returns 画像ファイルパス
  */
-export const createTrumpImagePath = (targetCardNumber: number): string => {
+const createTrumpImagePath = (targetCardNumber: number): string => {
     const cardData = cardList[targetCardNumber];
     // ジョーカー用かどうか
     const isJoker = cardData.value === JOKER_NUMBER;
@@ -62,7 +62,7 @@ export const createTrumpImagePath = (targetCardNumber: number): string => {
  * 選択された 2 枚のカードがペアかどうか
  * @returns ペアなら `true`, それ以外なら `false` を返却する
  */
-export const isCardPair = (): boolean => {
+const isCardPair = (): boolean => {
     const firstCardNumber = cardList[selectCardList[0]].value;
     const secondCardNumber = cardList[selectCardList[1]].value;
     return firstCardNumber === secondCardNumber;
@@ -74,7 +74,7 @@ export const isCardPair = (): boolean => {
  * @param message 表示するメッセージ
  * @param className 設定するクラス名
  */
-export const showResultMessage = (domItems: MemoryWeaknessDomItems, message: string, className: string | null = null) => {
+const showResultMessage = (domItems: MemoryWeaknessDomItems, message: string, className: string | null = null) => {
     const $messageArea = domItems.messageArea;
     $messageArea.innerText = message;
     if (className === null) {
@@ -88,26 +88,26 @@ export const showResultMessage = (domItems: MemoryWeaknessDomItems, message: str
  * @param pairCount ペア数
  * @returns ペア数を示す文字列
  */
-export const createPairCountValue = (pairCount: number): string => `${pairCount} ペア`;
+const createPairCountValue = (pairCount: number): string => `${pairCount} ペア`;
 
 /**
  * ミス数を示す文字列を作成する
  * @param missCount ミス数
  * @returns ミス数を示す文字列
  */
-export const createMissCountValue = (missCount: number): string => `${missCount} ミス`;
+const createMissCountValue = (missCount: number): string => `${missCount} ミス`;
 
 /**
  * ミスできる残り回数を示すメッセージを作成する
  * @param missCount ミスできる残り回数
  * @returns ミスできる残り回数を示すメッセージ
  */
-export const createStatusMessage = (missCount: number): string => `あと ${missCount} 回ミスできます。`;
+const createStatusMessage = (missCount: number): string => `あと ${missCount} 回ミスできます。`;
 
 /**
  * 選択中のカードを選択不可にする
  */
-export const setCardDisabled = () => {
+const setCardDisabled = () => {
     for (const cardNumber of selectCardList) {
         const $card = <HTMLImageElement | null>document.getElementById(`card_${cardNumber + 1}`);
         if ($card === null) {
@@ -121,7 +121,7 @@ export const setCardDisabled = () => {
 /**
  * 裏向きになっているすべてのカードを表向きにする
  */
-export const flipAllCards = () => {
+const flipAllCards = () => {
     // 裏向きになっているカード一覧
     // ※厳密には以下のクエリセレクター指定だと、現在選択中のカードも含まれてしまうが、ここでは気にしない
     const $targetList = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.cardImage:not(.${GRAY_OUT_CLASS_NAME})`);
@@ -131,7 +131,7 @@ export const flipAllCards = () => {
 /**
  * 選択中のカードを裏向きにする
  */
-export const turnCardFaceDown = () => {
+const turnCardFaceDown = () => {
     // 裏向きカードのパス
     const filePath = IMAGE_FOLDER_PATH + DEFAULT_CARD_FILE_NAME + IMAGE_EXTENSION;
     for (const cardNumber of selectCardList) {
@@ -161,7 +161,7 @@ export const addLifeImages = (domItems: MemoryWeaknessDomItems) => {
  * ライフ表示エリアからライフ画像要素を削除する
  * @param domItems 神経衰弱用 DOM 要素群
  */
-export const removeLifeImages = (domItems: MemoryWeaknessDomItems) => {
+const removeLifeImages = (domItems: MemoryWeaknessDomItems) => {
     const $lifeImages = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.${LIFE_IMAGE_CLASS_NAME}`);
     $lifeImages.forEach($life => domItems.lifeArea.removeChild($life));
 }
@@ -169,7 +169,7 @@ export const removeLifeImages = (domItems: MemoryWeaknessDomItems) => {
 /**
  * ライフ画像を削除する
  */
-export const removeLife = () => {
+const removeLife = () => {
     const $lifeImage = <HTMLImageElement>document.getElementById(`life_${missCount}`);
     $lifeImage.remove();
 }
@@ -177,7 +177,7 @@ export const removeLife = () => {
 /**
  * img 要素に設定されたグレーアウト用のクラスを削除する
  */
-export const removeGrayOut = () => {
+const removeGrayOut = () => {
     const $targetList = <NodeListOf<HTMLImageElement>> document.querySelectorAll(`.${GRAY_OUT_CLASS_NAME}`);
     $targetList.forEach($target => $target.classList.remove(GRAY_OUT_CLASS_NAME));
 }
@@ -188,7 +188,7 @@ export const removeGrayOut = () => {
  * @param end 終了番号
  * @returns 開始番号～終了番号までの連番一覧
  */
-export const createNumberList = (start: number, end: number): number[] => {
+const createNumberList = (start: number, end: number): number[] => {
     return Linq.range(start, end).toArray();
 }
 
@@ -198,7 +198,7 @@ export const createNumberList = (start: number, end: number): number[] => {
  * @param maxPair 最大ペア数
  * @returns ペア一覧
  */
-export const createPairList = (ranks: number[], maxPair: number): { "type": number, "value": number }[] => {
+const createPairList = (ranks: number[], maxPair: number): { "type": number, "value": number }[] => {
     // トランプの絵札一覧
     const cardTypeList = CARD_TYPE_LIST;
     const types = createNumberList(0, cardTypeList.length - 1);
@@ -227,7 +227,7 @@ export const createPairList = (ranks: number[], maxPair: number): { "type": numb
  * @param isJoker ジョーカーかどうか
  * @returns シャッフル後の絵札一覧
  */
-export const shuffleCardTypes = (types: number[], isJoker: boolean): number[] => {
+const shuffleCardTypes = (types: number[], isJoker: boolean): number[] => {
     if (isJoker) {
         // ジョーカーの場合
         // ジョーカー用のカードは 2 種類しかないので、 1 と 2 のみを格納した配列を用意する
@@ -241,7 +241,7 @@ export const shuffleCardTypes = (types: number[], isJoker: boolean): number[] =>
 /**
  * トランプのカードをシャッフルする
  */
-export const shuffleCards = () => {
+const shuffleCards = () => {
     // トランプのランク一覧
     const baseRanks = createNumberList(START_CARD_NUMBER, END_CARD_NUMBER);
 
@@ -260,7 +260,7 @@ export const shuffleCards = () => {
  * @param domItems 神経衰弱用 DOM 要素群
  * @returns
  */
-export const selectCard = async (e: MouseEvent, domItems: MemoryWeaknessDomItems) => {
+const selectCard = async (e: MouseEvent, domItems: MemoryWeaknessDomItems) => {
     if (!isSelectable || isGameClear || isGameOver) {
         // 以下のいずれかの条件を満たしている場合、何もしない
         // 　・カードが選択不可状態
@@ -349,7 +349,7 @@ export const selectCard = async (e: MouseEvent, domItems: MemoryWeaknessDomItems
  * @param domItems 神経衰弱用 DOM 要素群
  * @returns {void}
  */
-export const resetGame = (domItems: MemoryWeaknessDomItems) => {
+const resetGame = (domItems: MemoryWeaknessDomItems) => {
     if (pairCount === 0 && missCount === 0 && selectCardCount === 0) {
         // ゲームがプレイされていない場合は、何もしない
         return;

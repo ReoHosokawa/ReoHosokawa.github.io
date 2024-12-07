@@ -1,4 +1,4 @@
-import "./constant";
+import * as Constant from "./constant";
 import { MemoryWeaknessDomItems } from "./types/memory_weakness_dom_items";
 import { TrumpCard } from './types/trump_card';
 import Linq from 'linq';
@@ -46,16 +46,16 @@ let missCount: number;
 const createTrumpImagePath = (targetCardNumber: number): string => {
     const cardData = cardList[targetCardNumber];
     // ジョーカー用かどうか
-    const isJoker = cardData.value === JOKER_NUMBER;
+    const isJoker = cardData.value === Constant.JOKER_NUMBER;
     // カードの絵札情報
-    const cardType = CARD_TYPE_LIST[isJoker ? JOKER_TYPE : cardData.type];
+    const cardType = Constant.CARD_TYPE_LIST[isJoker ? Constant.JOKER_TYPE : cardData.type];
     // カードの番号
     const cardNumber = zeroPadding(isJoker ? cardData.type : cardData.value, 2);
     // 画像ファイル名
-    const fileName = cardType.value + cardNumber + IMAGE_EXTENSION;
+    const fileName = cardType.value + cardNumber + Constant.IMAGE_EXTENSION;
 
     // 画像パスにして返却する
-    return IMAGE_FOLDER_PATH + fileName;
+    return Constant.IMAGE_FOLDER_PATH + fileName;
 }
 
 /**
@@ -114,7 +114,7 @@ const setCardDisabled = () => {
             return;
         }
         $card.removeEventListener("dblclick", () => selectCard);
-        $card.classList.add(GRAY_OUT_CLASS_NAME);
+        $card.classList.add(Constant.GRAY_OUT_CLASS_NAME);
     }
 }
 
@@ -133,7 +133,7 @@ const flipAllCards = () => {
  */
 const turnCardFaceDown = () => {
     // 裏向きカードのパス
-    const filePath = IMAGE_FOLDER_PATH + DEFAULT_CARD_FILE_NAME + IMAGE_EXTENSION;
+    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
     for (const cardNumber of selectCardList) {
         const $card = <HTMLImageElement | null>document.getElementById(`card_${cardNumber + 1}`);
         if ($card === null) {
@@ -148,11 +148,11 @@ const turnCardFaceDown = () => {
  * @param domItems 神経衰弱用 DOM 要素群
  */
 export const addLifeImages = (domItems: MemoryWeaknessDomItems) => {
-    for (let i = MAX_MISS_NUMBER; i > 0; i--) {
+    for (let i = Constant.MAX_MISS_NUMBER; i > 0; i--) {
         const $life = document.createElement("img");
         $life.id = `life_${i}`;
-        $life.classList.add(LIFE_IMAGE_CLASS_NAME);
-        $life.src = IMAGE_FOLDER_PATH + LIFE_IMAGE_FILE_NAME;
+        $life.classList.add(Constant.LIFE_IMAGE_CLASS_NAME);
+        $life.src = Constant.IMAGE_FOLDER_PATH + Constant.LIFE_IMAGE_FILE_NAME;
         domItems.lifeArea.appendChild($life);
     }
 }
@@ -162,7 +162,7 @@ export const addLifeImages = (domItems: MemoryWeaknessDomItems) => {
  * @param domItems 神経衰弱用 DOM 要素群
  */
 const removeLifeImages = (domItems: MemoryWeaknessDomItems) => {
-    const $lifeImages = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.${LIFE_IMAGE_CLASS_NAME}`);
+    const $lifeImages = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.${Constant.LIFE_IMAGE_CLASS_NAME}`);
     $lifeImages.forEach($life => domItems.lifeArea.removeChild($life));
 }
 
@@ -178,8 +178,8 @@ const removeLife = () => {
  * img 要素に設定されたグレーアウト用のクラスを削除する
  */
 const removeGrayOut = () => {
-    const $targetList = <NodeListOf<HTMLImageElement>> document.querySelectorAll(`.${GRAY_OUT_CLASS_NAME}`);
-    $targetList.forEach($target => $target.classList.remove(GRAY_OUT_CLASS_NAME));
+    const $targetList = <NodeListOf<HTMLImageElement>> document.querySelectorAll(`.${Constant.GRAY_OUT_CLASS_NAME}`);
+    $targetList.forEach($target => $target.classList.remove(Constant.GRAY_OUT_CLASS_NAME));
 }
 
 /**
@@ -200,14 +200,14 @@ const createNumberList = (start: number, end: number): number[] => {
  */
 const createPairList = (ranks: number[], maxPair: number): { "type": number, "value": number }[] => {
     // トランプの絵札一覧
-    const cardTypeList = CARD_TYPE_LIST;
+    const cardTypeList = Constant.CARD_TYPE_LIST;
     const types = createNumberList(0, cardTypeList.length - 1);
 
     const pairList = new Array();
     for (let i = 0; i < maxPair; i++) {
         const rank = ranks[i];
         // ジョーカー用の番号かどうか
-        const isJoker = rank === JOKER_NUMBER;
+        const isJoker = rank === Constant.JOKER_NUMBER;
         // 絵札をシャッフルする
         const cardTypeList = shuffleCardTypes(types, isJoker);
 
@@ -243,13 +243,13 @@ const shuffleCardTypes = (types: number[], isJoker: boolean): number[] => {
  */
 const shuffleCards = () => {
     // トランプのランク一覧
-    const baseRanks = createNumberList(START_CARD_NUMBER, END_CARD_NUMBER);
+    const baseRanks = createNumberList(Constant.START_CARD_NUMBER, Constant.END_CARD_NUMBER);
 
     // ランク一覧シャッフル
     const ranks = Linq.from(baseRanks).shuffle().toArray();
 
     // 定義されている数のペアを用意する
-    const basePairList = createPairList(ranks, MAX_PAIR_NUMBER);
+    const basePairList = createPairList(ranks, Constant.MAX_PAIR_NUMBER);
     // 用意したペア一覧をシャッフルする
     cardList = Linq.from(basePairList).shuffle().toArray();
 }
@@ -289,7 +289,7 @@ const selectCard = async (e: MouseEvent, domItems: MemoryWeaknessDomItems) => {
     selectCardList.push(cardNumber);
     selectCardCount++;
 
-    if (selectCardCount !== SELECTABLE_NUMBER) {
+    if (selectCardCount !== Constant.SELECTABLE_NUMBER) {
         // カードが 2 枚選択されていない場合は、ここで処理終了
         return;
     }
@@ -300,11 +300,11 @@ const selectCard = async (e: MouseEvent, domItems: MemoryWeaknessDomItems) => {
 
     // ペアかどうかで処理を分岐する
     if (isPair) {
-        showResultMessage(domItems, "当たり！", HIT_CLASS_NAME);
+        showResultMessage(domItems, "当たり！", Constant.HIT_CLASS_NAME);
         pairCount++;
         domItems.pairCountArea.textContent = createPairCountValue(pairCount);
     } else {
-        showResultMessage(domItems, "はずれ…", MISS_CLASS_NAME);
+        showResultMessage(domItems, "はずれ…", Constant.MISS_CLASS_NAME);
         missCount++;
         domItems.missCountArea.textContent = createMissCountValue(missCount);
         removeLife();
@@ -313,27 +313,27 @@ const selectCard = async (e: MouseEvent, domItems: MemoryWeaknessDomItems) => {
     // 結果がすぐに消えないよう、1 秒間待機する
     await sleep(1000);
 
-    if (pairCount === MAX_PAIR_NUMBER) {
+    if (pairCount === Constant.MAX_PAIR_NUMBER) {
         // ペア数が最大ペア数に達した場合は、ゲームクリアとする
         isGameClear = true;
         domItems.messageArea.innerHTML = "ゲームクリア！<br/>おめでとう！";
-        domItems.messageArea.classList.remove(HIT_CLASS_NAME);
+        domItems.messageArea.classList.remove(Constant.HIT_CLASS_NAME);
         setCardDisabled();
         return;
     }
 
-    if (missCount === MAX_MISS_NUMBER) {
+    if (missCount === Constant.MAX_MISS_NUMBER) {
         // ミス数が最大ミス可能回数に達した場合は、ゲームオーバーとする
         isGameOver = true;
         domItems.messageArea.textContent = "ゲームオーバー";
-        domItems.messageArea.classList.remove(MISS_CLASS_NAME);
+        domItems.messageArea.classList.remove(Constant.MISS_CLASS_NAME);
         flipAllCards();
         return;
     }
 
     // 再度トライできるように画面を整える
-    domItems.messageArea.classList.remove(HIT_CLASS_NAME, MISS_CLASS_NAME);
-    domItems.messageArea.textContent = createStatusMessage(MAX_MISS_NUMBER - missCount);
+    domItems.messageArea.classList.remove(Constant.HIT_CLASS_NAME, Constant.MISS_CLASS_NAME);
+    domItems.messageArea.textContent = createStatusMessage(Constant.MAX_MISS_NUMBER - missCount);
     isSelectable = true;
 
     // ペアだった場合は、該当のカードを選択不可に、ペアではなかった場合はカードを裏返す
@@ -355,7 +355,7 @@ const resetGame = (domItems: MemoryWeaknessDomItems) => {
         return;
     }
 
-    if (pairCount === MAX_PAIR_NUMBER || missCount === MAX_MISS_NUMBER) {
+    if (pairCount === Constant.MAX_PAIR_NUMBER || missCount === Constant.MAX_MISS_NUMBER) {
         // プレイが終了している場合は、そのままリセットする
         init(domItems);
         return;
@@ -379,7 +379,7 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
     missCount = 0;
 
     // 初期状態で表示するトランプの裏向き画像パス
-    const filePath = IMAGE_FOLDER_PATH + DEFAULT_CARD_FILE_NAME + IMAGE_EXTENSION;
+    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
     domItems.cardImages.forEach($image => {
         // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
         $image.src = filePath;
@@ -404,7 +404,7 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
     // ミス数
     domItems.missCountArea.textContent = createMissCountValue(defaultCount);
     // 残りミス可能数
-    domItems.messageArea.textContent = createStatusMessage(MAX_MISS_NUMBER);
+    domItems.messageArea.textContent = createStatusMessage(Constant.MAX_MISS_NUMBER);
 
     // カードをシャッフルする
     shuffleCards();

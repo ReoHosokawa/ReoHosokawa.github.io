@@ -184,7 +184,10 @@ const removeLifeImages = (domItems: MemoryWeaknessDomItems) => {
  * ライフ画像を削除する
  */
 const removeLife = () => {
-    const $lifeImage = <HTMLImageElement>document.getElementById(`life_${missCount}`);
+    const $lifeImage = <HTMLImageElement | null>document.getElementById(`life_${missCount}`);
+    if ($lifeImage === null) {
+        return;
+    }
     $lifeImage.remove();
 }
 

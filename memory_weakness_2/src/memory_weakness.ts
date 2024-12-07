@@ -385,6 +385,10 @@ const resetGame = (domItems: MemoryWeaknessDomItems) => {
     init(domItems);
 }
 
+/**
+ * ゲーム画面を初期化する
+ * @param {MemoryWeaknessDomItems} domItems 神経衰弱用 DOM 要素
+ */
 export const init = (domItems: MemoryWeaknessDomItems) => {
     cardList = [];
     selectCardCount = 0;

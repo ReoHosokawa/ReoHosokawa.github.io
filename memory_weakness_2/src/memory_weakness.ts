@@ -124,7 +124,7 @@ const setCardDisabled = () => {
 const flipAllCards = () => {
     // 裏向きになっているカード一覧
     // ※厳密には以下のクエリセレクター指定だと、現在選択中のカードも含まれてしまうが、ここでは気にしない
-    const $targetList = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.cardImage:not(.${GRAY_OUT_CLASS_NAME})`);
+    const $targetList = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.card-image:not(.${Constant.GRAY_OUT_CLASS_NAME})`);
     $targetList.forEach($card => $card.src = createTrumpImagePath(Number($card.dataset.cardNumber)));
 }
 

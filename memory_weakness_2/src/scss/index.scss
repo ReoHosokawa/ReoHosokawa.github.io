@@ -6,7 +6,7 @@ body {
     background-image: url(../images/bgImg9.jpg);
 }
 
-#mainContainer {
+#main-container {
     width: 700px;
     height: 100%;
     margin-left: auto;
@@ -15,16 +15,16 @@ body {
     font-weight: bold;
 }
 
-#titleArea {
+#title-area {
     color: orange;
     font-size: 2.5em;
 }
 
-#subtitleArea {
+#subtitle-area {
     font-size: 1.3em;
 }
 
-#lifeArea {
+#life-area {
     font-size: 1.2em;
     display: flex;
     align-items: center;
@@ -36,18 +36,18 @@ body {
     }
 }
 
-#leftPanel,
-#rightPanel {
+#left-panel,
+#right-panel {
     display: inline-block;
 }
 
-#leftPanel {
+#left-panel {
     img {
         margin: 2px 5px;
     }
 }
 
-#rightPanel {
+#right-panel {
     float: right;
     font-size: 1.2em;
 
@@ -55,16 +55,16 @@ body {
         margin: 10px 0;
     }
 
-    #messageArea {
+    #message-area {
         width: 217.75px;
     }
 
-    #resetButtonArea {
+    #reset-button-area {
         margin-top: 250px;
     }
 }
 
-#resetButton {
+#reset-button {
     padding: 2px 20px;
     font-weight: bold;
 }
@@ -77,6 +77,6 @@ body {
     color: blue;
 }
 
-.grayOut {
+.gray-out {
     filter: brightness(50%);
 }

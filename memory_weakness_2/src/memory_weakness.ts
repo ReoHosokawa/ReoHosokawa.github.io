@@ -200,7 +200,7 @@ const hideLife = (missCount: number) => {
  * img 要素に設定されたグレーアウト用のクラスを削除する
  */
 const removeGrayOut = () => {
-    const $targetList = <NodeListOf<HTMLImageElement>> document.querySelectorAll(`.${Constant.GRAY_OUT_CLASS_NAME}`);
+    const $targetList = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.${Constant.GRAY_OUT_CLASS_NAME}`);
     $targetList.forEach($target => $target.classList.remove(Constant.GRAY_OUT_CLASS_NAME));
 }
 
@@ -264,7 +264,7 @@ const shuffleCardTypes = (types: number[], isJoker: boolean): number[] => {
  * トランプ画像セット用要素を作成する
  */
 export const createCardImages = () => {
-    const $cardArea = <HTMLDivElement | null> document.getElementById("card-area");
+    const $cardArea = <HTMLDivElement | null>document.getElementById("card-area");
     if ($cardArea === null) {
         return;
     }

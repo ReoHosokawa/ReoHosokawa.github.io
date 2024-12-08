@@ -9,19 +9,19 @@ import "./scss/nav.scss";
  * @returns 神経衰弱用 DOM 要素オブジェクト
  */
 const readDomItems = (): MemoryWeaknessDomItems | null => {
-    const $cardImages = <HTMLImageElement[]> Array.from(document.querySelectorAll(".card-image"));
+    const $cardImages = <HTMLImageElement[]>Array.from(document.querySelectorAll(".card-image"));
     if ($cardImages.length === 0) {
         return null;
     }
-    const $lifeArea = <HTMLDivElement | null> document.getElementById("life-area");
+    const $lifeArea = <HTMLDivElement | null>document.getElementById("life-area");
     if ($lifeArea === null) {
         return null;
     }
-    const $pairCountArea = <HTMLDivElement | null> document.getElementById("pair-count-area");
+    const $pairCountArea = <HTMLDivElement | null>document.getElementById("pair-count-area");
     if ($pairCountArea === null) {
         return null;
     }
-    const $messageArea = <HTMLDivElement | null> document.getElementById("message-area");
+    const $messageArea = <HTMLDivElement | null>document.getElementById("message-area");
     if ($messageArea === null) {
         return null;
     }
@@ -50,7 +50,7 @@ const appInit = () => {
     });
 
     // 「リセット」ボタンクリック時のイベント定義
-    const $resetButton = <HTMLAnchorElement | null> document.getElementById("reset-button");
+    const $resetButton = <HTMLAnchorElement | null>document.getElementById("reset-button");
     if ($resetButton === null) {
         return;
     }

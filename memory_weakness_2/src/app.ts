@@ -1,5 +1,5 @@
 import { MemoryWeaknessDomItems } from './types/memory_weakness_dom_items';
-import { selectCard, resetGame, addLifeImages, init } from "./memory_weakness";
+import { createCardImages, selectCard, resetGame, addLifeImages, init } from "./memory_weakness";
 import "./scss/index.scss";
 
 /**
@@ -49,6 +49,9 @@ const readDomItems = (): MemoryWeaknessDomItems | null => {
 }
 
 const appInit = () => {
+    // トランプ画像セット用要素を画面に追加する
+    createCardImages();
+
     const domItems = readDomItems();
     if (domItems === null) {
         return;

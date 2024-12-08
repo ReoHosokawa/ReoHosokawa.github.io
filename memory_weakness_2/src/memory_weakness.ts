@@ -255,6 +255,43 @@ const shuffleCardTypes = (types: number[], isJoker: boolean): number[] => {
 }
 
 /**
+ * トランプ画像セット用要素を作成する
+ */
+export const createCardImages = () => {
+    const $cardArea = <HTMLDivElement | null> document.getElementById("card-area");
+    if ($cardArea === null) {
+        return;
+    }
+
+    const $table = document.createElement("div");
+    $table.classList.add("table");
+
+    // 初期状態で表示するトランプの裏向き画像パス
+    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
+    let cardNumber = 0;
+    const $tableRows: HTMLDivElement[] = [];
+    for (let i = 0; i < Constant.CARD_TABLE_MAX_ROW_NUMBER; i++) {
+        const $tableRow = document.createElement("div");
+        $tableRow.classList.add("table-row");
+
+        for (let j = 0; j < Constant.CARD_COUNT_PER_ONE_ROW; j++) {
+            const $img = document.createElement("img");
+            $img.id = `card_${cardNumber + 1}`;
+            $img.classList.add("card-image");
+            $img.dataset.cardNumber = cardNumber.toString();
+            $img.src = filePath;
+
+            $tableRow.appendChild($img);
+            cardNumber++;
+        }
+
+        $tableRows.push($tableRow);
+    }
+
+    $table.append(...$tableRows);
+}
+
+/**
  * トランプのカードをシャッフルする
  */
 const shuffleCards = () => {

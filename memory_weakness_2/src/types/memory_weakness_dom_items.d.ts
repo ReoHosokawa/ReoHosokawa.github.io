@@ -19,17 +19,7 @@ export interface MemoryWeaknessDomItems {
     pairCountArea: HTMLDivElement;
 
     /**
-     * ミス数表示要素
-     */
-    missCountArea: HTMLDivElement;
-
-    /**
      * メッセージ表示要素
      */
     messageArea: HTMLDivElement;
-
-    /**
-     * リセットボタン要素
-     */
-    resetButton: HTMLButtonElement;
 }

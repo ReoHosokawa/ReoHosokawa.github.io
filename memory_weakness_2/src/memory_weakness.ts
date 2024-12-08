@@ -340,6 +340,26 @@ const isSelectCardOk = (cardNumber: number): boolean => {
 }
 
 /**
+ * カードの選択結果を画面に表示する
+ * @param isPair ペアかどうか
+ * @param domItems 神経衰弱用 DOM 要素群
+ * @returns {void}
+ */
+const showSelectionResult = (isPair: boolean, domItems: MemoryWeaknessDomItems) => {
+    if (isPair) {
+        // ペアが揃った場合
+        showResultMessage(domItems, "当たり！", Constant.HIT_CLASS_NAME);
+        pairCount++;
+        domItems.pairCountArea.textContent = createPairCountValue(pairCount);
+        return;
+    }
+
+    showResultMessage(domItems, "はずれ…", Constant.MISS_CLASS_NAME);
+    missCount++;
+    removeLife();
+}
+
+/**
  * カードが選択された場合に実行される処理
  * @param $image 対象のトランプ画像要素
  * @param domItems 神経衰弱用 DOM 要素群
@@ -370,18 +390,9 @@ export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeakn
 
     isSelectable = false;
 
+    // カードの選択結果を画面に表示する
     const isPair = isCardPair();
-
-    // ペアかどうかで処理を分岐する
-    if (isPair) {
-        showResultMessage(domItems, "当たり！", Constant.HIT_CLASS_NAME);
-        pairCount++;
-        domItems.pairCountArea.textContent = createPairCountValue(pairCount);
-    } else {
-        showResultMessage(domItems, "はずれ…", Constant.MISS_CLASS_NAME);
-        missCount++;
-        removeLife();
-    }
+    showSelectionResult(isPair, domItems);
 
     // 結果がすぐに消えないよう、1 秒間待機する
     await sleep(1000);

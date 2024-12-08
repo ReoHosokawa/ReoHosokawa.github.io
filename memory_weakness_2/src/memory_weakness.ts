@@ -429,23 +429,34 @@ export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeakn
 }
 
 /**
+ * ゲームをリセットするかどうか
+ * @returns リセットする場合は `true`、それ以外は `false` を返却する
+ */
+const isResetOk = (): boolean => {
+    const isPlaying = !(pairCount === 0 && missCount === 0 && selectCardCount === 0);
+    if (!isPlaying) {
+        // ゲームがプレイされていない場合は、何もしない
+        return false;
+    }
+
+    const isGameEnd = pairCount === Constant.MAX_PAIR_NUMBER || missCount === Constant.MAX_MISS_NUMBER;
+    if (isGameEnd) {
+        // プレイが終了している場合は、そのままリセットする
+        return true;
+    }
+
+    // プレイ中の場合は、リセットするかユーザーに確認する
+    return !window.confirm("まだプレイ中ですが、リセットしますか？");
+}
+
+/**
  * リセットボタンが押された場合の処理
  * @param domItems 神経衰弱用 DOM 要素群
  * @returns {void}
  */
 export const resetGame = (domItems: MemoryWeaknessDomItems) => {
-    if (pairCount === 0 && missCount === 0 && selectCardCount === 0) {
-        // ゲームがプレイされていない場合は、何もしない
-        return;
-    }
-
-    if (pairCount === Constant.MAX_PAIR_NUMBER || missCount === Constant.MAX_MISS_NUMBER) {
-        // プレイが終了している場合は、そのままリセットする
-        init(domItems);
-        return;
-    }
-
-    if (!window.confirm("まだプレイ中ですが、リセットしますか？")) {
+    if (!isResetOk()) {
+        // リセット条件を満たさない場合は、何もしない
         return;
     }
 

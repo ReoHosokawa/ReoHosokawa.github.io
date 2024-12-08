@@ -127,7 +127,6 @@ const setCardDisabled = () => {
         if ($card === null) {
             return;
         }
-        $card.removeEventListener("dblclick", () => selectCard);
         $card.classList.add(Constant.GRAY_OUT_CLASS_NAME);
     }
 }
@@ -273,11 +272,16 @@ const shuffleCards = () => {
 
 /**
  * カードが選択された場合に実行される処理
- * @param e マウスイベントオブジェクト
+ * @param $image 対象のトランプ画像要素
  * @param domItems 神経衰弱用 DOM 要素群
  * @returns
  */
-const selectCard = async (e: MouseEvent, domItems: MemoryWeaknessDomItems) => {
+const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeaknessDomItems) => {
+    if ($image.classList.contains(Constant.GRAY_OUT_CLASS_NAME)) {
+        // 対象のカードがグレーアウトされている場合は、何もしない
+        return;
+    }
+
     if (!isSelectable || isGameClear || isGameOver) {
         // 以下のいずれかの条件を満たしている場合、何もしない
         // 　・カードが選択不可状態
@@ -285,13 +289,6 @@ const selectCard = async (e: MouseEvent, domItems: MemoryWeaknessDomItems) => {
         // 　・ゲームオーバー状態
         return;
     }
-
-    const target = e.target;
-    if (target === null) {
-        return;
-    }
-
-    const $image = <HTMLImageElement>target;
 
     const cardNumber = Number($image.dataset.cardNumber);
     if (selectCardCount === 1 && selectCardList[0] === cardNumber) {
@@ -406,7 +403,7 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
         $image.src = filePath;
 
         // トランプ画像がダブルクリックされた場合のイベント定義
-        $image.addEventListener("dblclick", (e) => selectCard(e, domItems));
+        $image.addEventListener("dblclick", (e) => selectCard($image, domItems));
     });
 
     // 「リセット」ボタンクリック時のイベント定義

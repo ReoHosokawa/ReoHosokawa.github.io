@@ -1,5 +1,6 @@
 import { MemoryWeaknessDomItems } from './types/memory_weakness_dom_items';
-import { addLifeImages, init } from "./memory_weakness";
+import * as Constant from "./constant";
+import { selectCard, resetGame, addLifeImages, init } from "./memory_weakness";
 import "./scss/index.scss";
 
 /**
@@ -53,6 +54,19 @@ const appInit = () => {
     if (domItems === null) {
         return;
     }
+
+    // 初期状態で表示するトランプの裏向き画像パス
+    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
+    domItems.cardImages.forEach($image => {
+        // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
+        $image.src = filePath;
+
+        // トランプ画像がダブルクリックされた場合のイベント定義
+        $image.addEventListener("dblclick", (e) => selectCard($image, domItems));
+    });
+
+    // 「リセット」ボタンクリック時のイベント定義
+    domItems.resetButton.addEventListener("click", (e) => resetGame(domItems));
 
     init(domItems);
 

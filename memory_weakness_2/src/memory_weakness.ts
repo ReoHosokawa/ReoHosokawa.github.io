@@ -276,7 +276,7 @@ const shuffleCards = () => {
  * @param domItems 神経衰弱用 DOM 要素群
  * @returns
  */
-const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeaknessDomItems) => {
+export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeaknessDomItems) => {
     if ($image.classList.contains(Constant.GRAY_OUT_CLASS_NAME)) {
         // 対象のカードがグレーアウトされている場合は、何もしない
         return;
@@ -363,7 +363,7 @@ const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeaknessDomI
  * @param domItems 神経衰弱用 DOM 要素群
  * @returns {void}
  */
-const resetGame = (domItems: MemoryWeaknessDomItems) => {
+export const resetGame = (domItems: MemoryWeaknessDomItems) => {
     if (pairCount === 0 && missCount === 0 && selectCardCount === 0) {
         // ゲームがプレイされていない場合は、何もしない
         return;
@@ -395,19 +395,6 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
     isGameOver = false;
     pairCount = 0;
     missCount = 0;
-
-    // 初期状態で表示するトランプの裏向き画像パス
-    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
-    domItems.cardImages.forEach($image => {
-        // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
-        $image.src = filePath;
-
-        // トランプ画像がダブルクリックされた場合のイベント定義
-        $image.addEventListener("dblclick", (e) => selectCard($image, domItems));
-    });
-
-    // 「リセット」ボタンクリック時のイベント定義
-    domItems.resetButton.addEventListener("click", (e) => resetGame(domItems));
 
     // ライフ画像要素が設定されている可能性があるので、いったん削除する
     removeLifeImages(domItems);

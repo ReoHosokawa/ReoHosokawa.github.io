@@ -380,7 +380,6 @@ export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeakn
     } else {
         showResultMessage(domItems, "はずれ…", Constant.MISS_CLASS_NAME);
         missCount++;
-        domItems.missCountArea.textContent = createMissCountValue(missCount);
         removeLife();
     }
 
@@ -472,8 +471,6 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
     const defaultCount = 0;
     // ペア数
     domItems.pairCountArea.textContent = createPairCountValue(defaultCount);
-    // ミス数
-    domItems.missCountArea.textContent = createMissCountValue(defaultCount);
     // 残りミス可能数
     domItems.messageArea.textContent = createStatusMessage(Constant.MAX_MISS_NUMBER);
 

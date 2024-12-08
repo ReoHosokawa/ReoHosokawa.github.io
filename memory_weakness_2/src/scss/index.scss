@@ -7,21 +7,12 @@ body {
 }
 
 #main-container {
-    width: 700px;
+    width: 100%;
     height: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    position: relative;
+    top: 60px;
     text-align: center;
     font-weight: bold;
-}
-
-#title-area {
-    color: orange;
-    font-size: 2.5em;
-}
-
-#subtitle-area {
-    font-size: 1.3em;
 }
 
 #life-area {
@@ -36,37 +27,10 @@ body {
     }
 }
 
-#left-panel,
-#right-panel {
-    display: inline-block;
-}
-
-#left-panel {
+#card-area {
     img {
         margin: 2px 5px;
     }
-}
-
-#right-panel {
-    float: right;
-    font-size: 1.2em;
-
-    div {
-        margin: 10px 0;
-    }
-
-    #message-area {
-        width: 217.75px;
-    }
-
-    #reset-button-area {
-        margin-top: 250px;
-    }
-}
-
-#reset-button {
-    padding: 2px 20px;
-    font-weight: bold;
 }
 
 .hit {

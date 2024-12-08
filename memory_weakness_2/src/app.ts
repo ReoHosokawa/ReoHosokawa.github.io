@@ -1,12 +1,8 @@
 import { MemoryWeaknessDomItems } from './types/memory_weakness_dom_items';
 import { createCardImages, selectCard, resetGame, addLifeImages, init } from "./memory_weakness";
 import "./scss/index.scss";
+import "./scss/nav.scss";
 
-/**
- * タッチ対応デバイスかどうか
- * @returns タッチ操作可能なら true 、それ以外は false を返却する
- */
-const isTouchDevice = () => typeof window.ontouchstart === "object";
 
 /**
  * 神経衰弱を実行するために必要な DOM 要素を読み出してオブジェクトで返却する
@@ -25,16 +21,8 @@ const readDomItems = (): MemoryWeaknessDomItems | null => {
     if ($pairCountArea === null) {
         return null;
     }
-    const $missCountArea = <HTMLDivElement | null> document.getElementById("miss-count-area");
-    if ($missCountArea === null) {
-        return null;
-    }
     const $messageArea = <HTMLDivElement | null> document.getElementById("message-area");
     if ($messageArea === null) {
-        return null;
-    }
-    const $resetButton = <HTMLButtonElement | null> document.getElementById("reset-button");
-    if ($resetButton === null) {
         return null;
     }
 
@@ -42,9 +30,7 @@ const readDomItems = (): MemoryWeaknessDomItems | null => {
         cardImages: $cardImages,
         lifeArea: $lifeArea,
         pairCountArea: $pairCountArea,
-        missCountArea: $missCountArea,
         messageArea: $messageArea,
-        resetButton: $resetButton,
     };
 }
 
@@ -53,6 +39,7 @@ const appInit = () => {
     createCardImages();
 
     const domItems = readDomItems();
+    console.log("domItems: ", domItems);
     if (domItems === null) {
         return;
     }
@@ -63,18 +50,16 @@ const appInit = () => {
     });
 
     // 「リセット」ボタンクリック時のイベント定義
-    domItems.resetButton.addEventListener("click", (e) => resetGame(domItems));
+    const $resetButton = <HTMLAnchorElement | null> document.getElementById("reset-button");
+    if ($resetButton === null) {
+        return;
+    }
+    $resetButton.addEventListener("click", (e) => resetGame(domItems));
 
     init(domItems);
 
     // スマホで操作時、ダブルタップで拡大してしまうのを防止する
     document.addEventListener("dblclick", (e: MouseEvent) => e.preventDefault(), { passive: false });
-
-    // タッチ対応デバイスかどうかに応じて、表示内容を切り替える
-    const clickTypeValue = isTouchDevice() ? "タップ" : "クリック";
-
-    const $subtitleArea = <HTMLDivElement>document.getElementById("subtitle-area");
-    $subtitleArea.textContent = `カードをめくるときはダブル${clickTypeValue}！！`;
 }
 
 

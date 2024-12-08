@@ -271,6 +271,39 @@ const shuffleCards = () => {
 }
 
 /**
+ * カードを選択しても問題ないか
+ * @param cardNumber 対象のカード番号
+ * @returns 選択する場合は `true`、それ以外は `false` を返却する
+ */
+const isSelectCardOk = (cardNumber: number): boolean => {
+    if (!isSelectable) {
+        // カードが選択不可状態の場合は、選択対象外とする
+        return false;
+    }
+
+    if (isGameClear) {
+        // すでにゲームクリアしている場合は、選択対象外とする
+        return false;
+    }
+
+    if (isGameOver) {
+        // ゲームオーバーになっている場合は、選択対象外とする
+        return false;
+    }
+
+    const isOneCardSelected = selectCardCount === 1;
+    const isSameCardSelected = selectCardList[0] === cardNumber;
+    if (isOneCardSelected && isSameCardSelected) {
+        // すでにカードが 1 枚選択されている場合、今回選択されたカードが
+        // ひとつ前に選択されたカードと同じ場所だった場合は、選択対象外とする
+        return false;
+    }
+
+    // 上記のいずれの条件も満たさない場合、選択対象とする
+    return true;
+}
+
+/**
  * カードが選択された場合に実行される処理
  * @param $image 対象のトランプ画像要素
  * @param domItems 神経衰弱用 DOM 要素群
@@ -282,18 +315,9 @@ export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeakn
         return;
     }
 
-    if (!isSelectable || isGameClear || isGameOver) {
-        // 以下のいずれかの条件を満たしている場合、何もしない
-        // 　・カードが選択不可状態
-        // 　・ゲームクリア状態
-        // 　・ゲームオーバー状態
-        return;
-    }
-
     const cardNumber = Number($image.dataset.cardNumber);
-    if (selectCardCount === 1 && selectCardList[0] === cardNumber) {
-        // すでにカードが 1 枚選択されている場合、今回選択されたカードがひとつ前に選択されたカードと
-        // 同じ場所だった場合は何もしない
+    if (!isSelectCardOk(cardNumber)) {
+        // 選択対象ではない場合、何もしない
         return;
     }
     // 選択されたトランプを表向きにする

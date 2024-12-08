@@ -19,11 +19,13 @@ body {
     font-size: 1.2em;
     display: flex;
     align-items: center;
-    margin: 5px 40px;
+    justify-content: center;
+    margin: 5px 0;
 
     img {
-        width: 3.5%;
+        width: 24px;
         padding: 0 5px;
+        z-index: 1;
     }
 }
 

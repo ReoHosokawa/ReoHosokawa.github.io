@@ -403,6 +403,12 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
 
     removeGrayOut();
 
+    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
+    domItems.cardImages.forEach($image => {
+        // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
+        $image.src = filePath;
+    });
+
     const defaultCount = 0;
     // ペア数
     domItems.pairCountArea.textContent = createPairCountValue(defaultCount);

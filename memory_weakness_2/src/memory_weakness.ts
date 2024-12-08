@@ -269,7 +269,6 @@ export const createCardImages = () => {
     // 初期状態で表示するトランプの裏向き画像パス
     const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
     let cardNumber = 0;
-    const $tableRows: HTMLDivElement[] = [];
     for (let i = 0; i < Constant.CARD_TABLE_MAX_ROW_NUMBER; i++) {
         const $tableRow = document.createElement("div");
         $tableRow.classList.add("table-row");
@@ -285,10 +284,10 @@ export const createCardImages = () => {
             cardNumber++;
         }
 
-        $tableRows.push($tableRow);
+        $table.appendChild($tableRow);
     }
 
-    $table.append(...$tableRows);
+    $cardArea.append($table);
 }
 
 /**

@@ -171,23 +171,29 @@ export const addLifeImages = (domItems: MemoryWeaknessDomItems) => {
 }
 
 /**
- * ライフ表示エリアからライフ画像要素を削除する
- * @param domItems 神経衰弱用 DOM 要素群
+ * ライフ画像をすべて表示する
  */
-const removeLifeImages = (domItems: MemoryWeaknessDomItems) => {
-    const $lifeImages = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.${Constant.LIFE_IMAGE_CLASS_NAME}`);
-    $lifeImages.forEach($life => domItems.lifeArea.removeChild($life));
+const showLifeImages = () => {
+    for (let i = Constant.MAX_MISS_NUMBER; i > 0; i--) {
+        /** @type {HTMLImageElement | null} */
+        const $life = document.getElementById(`life_${i}`);
+        if ($life === null) {
+            return;
+        }
+        $life.style.visibility = "visible";
+    }
 }
 
 /**
- * ライフ画像を削除する
+ * 指定されたミス数に対応したライフ画像を非表示にする
+ * @param {number} missCount ミス数
  */
-const removeLife = () => {
-    const $lifeImage = <HTMLImageElement | null>document.getElementById(`life_${missCount}`);
-    if ($lifeImage === null) {
+const hideLife = (missCount: number) => {
+    const $life = <HTMLImageElement | null>document.getElementById(`life_${missCount}`);
+    if ($life === null) {
         return;
     }
-    $lifeImage.remove();
+    $life.style.visibility = "hidden";
 }
 
 /**
@@ -356,7 +362,7 @@ const showSelectionResult = (isPair: boolean, domItems: MemoryWeaknessDomItems) 
 
     showResultMessage(domItems, "はずれ…", Constant.MISS_CLASS_NAME);
     missCount++;
-    removeLife();
+    hideLife(missCount);
 }
 
 /**
@@ -460,6 +466,9 @@ export const resetGame = (domItems: MemoryWeaknessDomItems) => {
         return;
     }
 
+    // ライフを表示する
+    showLifeImages();
+
     init(domItems);
 }
 
@@ -476,11 +485,6 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
     isGameOver = false;
     pairCount = 0;
     missCount = 0;
-
-    // ライフ画像要素が設定されている可能性があるので、いったん削除する
-    removeLifeImages(domItems);
-    // ライフの追加
-    addLifeImages(domItems);
 
     removeGrayOut();
 

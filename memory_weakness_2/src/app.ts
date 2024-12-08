@@ -56,6 +56,9 @@ const appInit = () => {
     }
     $resetButton.addEventListener("click", (e) => resetGame(domItems));
 
+    // ライフ画像を画面に追加する
+    addLifeImages(domItems);
+
     init(domItems);
 
     // スマホで操作時、ダブルタップで拡大してしまうのを防止する

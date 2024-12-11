@@ -12,23 +12,24 @@
 </head>
 
 <body>
+    <header class="header">
+        <div class="nav-text-container">
+            <div id="pair-count-area" class="nav-text"></div>
+            <div id="message-area" class="nav-text"></div>
+        </div>
+        <input type="checkbox" class="menu-btn" id="menu-btn">
+        <label for="menu-btn" class="menu-icon"><span class="nav-icon"></span></label>
+        <span class="nav-title nav-text">神経衰弱</span>
+        <ul class="menu">
+            <li><a id="reset-button">reset</a></li>
+        </ul>
+    </header>
+
     <div id="main-container">
-        <div id="title-area">☆神経衰弱☆</div>
-        <div id="subtitle-area">カードをめくるときはダブルクリック！！</div>
         <div id="life-area">
             <span>ライフ：</span>
         </div>
-        <div id="left-panel">
-            <div id="card-area"></div>
-        </div>
-        <div id="right-panel">
-            <div id="pair-count-area"></div>
-            <div id="miss-count-area"></div>
-            <div id="message-area"></div>
-            <div id="reset-button-area">
-                <button type="button" id="reset-button">リセット</button>
-            </div>
-        </div>
+        <div id="card-area"></div>
     </div>
 </body>
 

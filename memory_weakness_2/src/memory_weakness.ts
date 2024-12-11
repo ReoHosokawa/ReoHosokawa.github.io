@@ -95,6 +95,20 @@ const showResultMessage = (domItems: MemoryWeaknessDomItems, message: string, cl
         return;
     }
     $messageArea.classList.add(className);
+    $messageArea.style.display = "block";
+    domItems.pairCountArea.style.display = "none";
+}
+
+/**
+ * 結果メッセージを非表示にする
+ * @param domItems 神経衰弱用 DOM 要素群
+ */
+const hideResultMessage = (domItems: MemoryWeaknessDomItems) => {
+    const $messageArea = domItems.messageArea;
+    $messageArea.style.display = "none";
+    $messageArea.classList.remove(Constant.HIT_CLASS_NAME);
+    $messageArea.classList.remove(Constant.MISS_CLASS_NAME);
+    domItems.pairCountArea.style.display = "block";
 }
 
 /**
@@ -402,6 +416,8 @@ export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeakn
 
     // 結果がすぐに消えないよう、1 秒間待機する
     await sleep(1000);
+    // カードの選択結果を非表示にする
+    hideResultMessage(domItems);
 
     if (pairCount === Constant.MAX_PAIR_NUMBER) {
         // ペア数が最大ペア数に達した場合は、ゲームクリアとする
@@ -504,6 +520,8 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
     domItems.pairCountArea.textContent = createPairCountValue(defaultCount);
     // 残りミス可能数
     domItems.messageArea.textContent = createStatusMessage(Constant.MAX_MISS_NUMBER);
+    // 初期状態ではメッセージエリアを非表示にしておく
+    domItems.messageArea.style.display = "none";
 
     // カードをシャッフルする
     shuffleCards();

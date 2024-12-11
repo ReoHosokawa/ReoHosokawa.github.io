@@ -439,7 +439,6 @@ export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeakn
 
     // 再度トライできるように画面を整える
     domItems.messageArea.classList.remove(Constant.HIT_CLASS_NAME, Constant.MISS_CLASS_NAME);
-    domItems.messageArea.textContent = createStatusMessage(Constant.MAX_MISS_NUMBER - missCount);
     isSelectable = true;
 
     // ペアだった場合は、該当のカードを選択不可に、ペアではなかった場合はカードを裏返す
@@ -518,8 +517,6 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
     const defaultCount = 0;
     // ペア数
     domItems.pairCountArea.textContent = createPairCountValue(defaultCount);
-    // 残りミス可能数
-    domItems.messageArea.textContent = createStatusMessage(Constant.MAX_MISS_NUMBER);
     // 初期状態ではメッセージエリアを非表示にしておく
     domItems.messageArea.style.display = "none";
 

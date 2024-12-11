@@ -119,20 +119,6 @@ const hideResultMessage = (domItems: MemoryWeaknessDomItems) => {
 const createPairCountValue = (pairCount: number): string => `${pairCount} ペア`;
 
 /**
- * ミス数を示す文字列を作成する
- * @param missCount ミス数
- * @returns ミス数を示す文字列
- */
-const createMissCountValue = (missCount: number): string => `${missCount} ミス`;
-
-/**
- * ミスできる残り回数を示すメッセージを作成する
- * @param missCount ミスできる残り回数
- * @returns ミスできる残り回数を示すメッセージ
- */
-const createStatusMessage = (missCount: number): string => `あと ${missCount} 回ミスできます。`;
-
-/**
  * 選択中のカードを選択不可にする
  */
 const setCardDisabled = () => {

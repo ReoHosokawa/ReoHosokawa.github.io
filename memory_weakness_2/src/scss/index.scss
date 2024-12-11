@@ -41,11 +41,11 @@ body {
 }
 
 .hit {
-    color: red;
+    color: red !important;
 }
 
 .miss {
-    color: blue;
+    color: lightgreen !important;
 }
 
 .gray-out {

@@ -469,6 +469,13 @@ export const resetGame = (domItems: MemoryWeaknessDomItems) => {
     // ライフを表示する
     showLifeImages();
 
+    // トランプ画像のグレーアウトを解除する
+    removeGrayOut();
+
+    // トランプ画像をすべて裏向きにする
+    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
+    domItems.cardImages.forEach($image => $image.src = filePath);
+
     init(domItems);
 }
 
@@ -485,14 +492,6 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
     isGameOver = false;
     pairCount = 0;
     missCount = 0;
-
-    removeGrayOut();
-
-    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
-    domItems.cardImages.forEach($image => {
-        // カード画像設定要素群に、トランプの裏向き画像を初期状態としてセットする
-        $image.src = filePath;
-    });
 
     const defaultCount = 0;
     // ペア数

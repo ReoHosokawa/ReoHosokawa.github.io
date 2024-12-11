@@ -477,6 +477,12 @@ export const resetGame = (domItems: MemoryWeaknessDomItems) => {
     domItems.cardImages.forEach($image => $image.src = filePath);
 
     init(domItems);
+
+    const $menuButton = <HTMLInputElement | null>document.getElementById("menu-btn");
+    if ($menuButton === null) {
+        return;
+    }
+    $menuButton.checked = false;
 }
 
 /**

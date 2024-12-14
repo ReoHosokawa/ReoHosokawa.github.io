@@ -2,6 +2,7 @@ import { MemoryWeaknessDomItems } from './types/memory_weakness_dom_items';
 import { createCardImages, selectCard, resetGame, addLifeImages, init } from "./memory_weakness";
 import "./scss/index.scss";
 import "./scss/nav.scss";
+import "./scss/card.scss";
 
 
 /**
@@ -9,8 +10,16 @@ import "./scss/nav.scss";
  * @returns 神経衰弱用 DOM 要素オブジェクト
  */
 const readDomItems = (): MemoryWeaknessDomItems | null => {
-    const $cardImages = <HTMLImageElement[]>Array.from(document.querySelectorAll(".card-image"));
-    if ($cardImages.length === 0) {
+    const $cardAreas = <HTMLLIElement[]>Array.from(document.querySelectorAll(".card"));
+    if ($cardAreas.length === 0) {
+        return null;
+    }
+    const $frontCardImages = <HTMLImageElement[]>Array.from(document.querySelectorAll(".card-image-front"));
+    if ($frontCardImages.length === 0) {
+        return null;
+    }
+    const $backCardImages = <HTMLImageElement[]>Array.from(document.querySelectorAll(".card-image-back"));
+    if ($backCardImages.length === 0) {
         return null;
     }
     const $lifeArea = <HTMLDivElement | null>document.getElementById("life-area");
@@ -27,10 +36,12 @@ const readDomItems = (): MemoryWeaknessDomItems | null => {
     }
 
     return {
-        cardImages: $cardImages,
+        cardAreas: $cardAreas,
+        frontCardImages: $frontCardImages,
+        backCardImages: $backCardImages,
         lifeArea: $lifeArea,
-        pairCountArea: $pairCountArea,
         messageArea: $messageArea,
+        pairCountArea: $pairCountArea,
     };
 }
 
@@ -43,10 +54,10 @@ const appInit = () => {
         return;
     }
 
-    domItems.cardImages.forEach($image => {
+    for (const $cardArea of domItems.cardAreas) {
         // トランプ画像がダブルクリックされた場合のイベント定義
-        $image.addEventListener("dblclick", (e) => selectCard($image, domItems));
-    });
+        $cardArea.addEventListener("dblclick", () => selectCard($cardArea, domItems));
+    }
 
     // 「リセット」ボタンクリック時のイベント定義
     const $resetButton = <HTMLAnchorElement | null>document.getElementById("reset-button");

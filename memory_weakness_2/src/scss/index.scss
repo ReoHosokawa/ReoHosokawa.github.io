@@ -35,9 +35,15 @@ body {
 }
 
 #card-area {
-    img {
-        margin: 2px 5px;
-    }
+    width: fit-content;
+    margin-inline: auto;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    list-style: none;
 }
 
 .hit {

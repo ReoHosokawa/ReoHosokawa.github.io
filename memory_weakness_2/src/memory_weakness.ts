@@ -121,9 +121,9 @@ const createPairCountValue = (pairCount: number): string => `${pairCount} ペア
 /**
  * 選択中のカードを選択不可にする
  */
-const setCardDisabled = () => {
+const makeCardUnselectable = () => {
     for (const cardNumber of selectCardList) {
-        const $card = <HTMLImageElement | null>document.getElementById(`card_${cardNumber + 1}`);
+        const $card = <HTMLLIElement | null>document.querySelector(`.card[data-card-number="${cardNumber}"]`);
         if ($card === null) {
             return;
         }
@@ -135,24 +135,59 @@ const setCardDisabled = () => {
  * 裏向きになっているすべてのカードを表向きにする
  */
 const flipAllCards = () => {
+    const cardAreaQuerySelector = `.card:not(.${Constant.GRAY_OUT_CLASS_NAME}):not(.${Constant.OPEN_CLASS_NAME})`;
     // 裏向きになっているカード一覧
-    // ※厳密には以下のクエリセレクター指定だと、現在選択中のカードも含まれてしまうが、ここでは気にしない
-    const $targetList = <NodeListOf<HTMLImageElement>>document.querySelectorAll(`.card-image:not(.${Constant.GRAY_OUT_CLASS_NAME})`);
-    $targetList.forEach($card => $card.src = createTrumpImagePath(Number($card.dataset.cardNumber)));
+    const $targetCardAreas = <HTMLLIElement[]>Array.from(document.querySelectorAll(cardAreaQuerySelector));
+    for (const $cardArea of $targetCardAreas) {
+        const cardNumber = Number($cardArea.dataset.cardNumber);
+        if (Number.isNaN(cardNumber)) {
+            continue;
+        }
+
+        const $frontCard = <HTMLImageElement | null>document.getElementById(`card_front_${cardNumber + 1}`);
+        if ($frontCard === null) {
+            continue;
+        }
+        $frontCard.src = createTrumpImagePath(cardNumber);
+        $cardArea.classList.add(Constant.OPEN_CLASS_NAME);
+    }
+}
+
+/**
+ * 対象のイベントに紐づく画像要素に指定されている画像パスを削除する
+ * @param e 対象のアニメーションイベント
+ * @returns なし
+ */
+const removeFrontCardPath = (e: AnimationEvent) => {
+    const $frontCard = <HTMLImageElement | null>e.target;
+    if ($frontCard === null) {
+        return;
+    }
+    $frontCard.src = "";
+
+    const $cardArea = $frontCard.closest("li");
+    if ($cardArea === null) {
+        return;
+    }
+    $cardArea.removeEventListener("animationend", removeFrontCardPath);
 }
 
 /**
  * 選択中のカードを裏向きにする
  */
 const turnCardFaceDown = () => {
-    // 裏向きカードのパス
-    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
     for (const cardNumber of selectCardList) {
-        const $card = <HTMLImageElement | null>document.getElementById(`card_${cardNumber + 1}`);
-        if ($card === null) {
-            return;
+        const $frontCard = <HTMLImageElement | null>document.getElementById(`card_front_${cardNumber + 1}`);
+        if ($frontCard === null) {
+            continue;
         }
-        $card.src = filePath;
+
+        const $cardArea = $frontCard.closest("li");
+        if ($cardArea === null) {
+            continue;
+        }
+        $cardArea.classList.remove(Constant.OPEN_CLASS_NAME);
+        $cardArea.addEventListener("animationend", removeFrontCardPath);
     }
 }
 
@@ -261,6 +296,44 @@ const shuffleCardTypes = (types: number[], isJoker: boolean): number[] => {
 }
 
 /**
+ * カード表示用要素を作成する
+ * @param cardNumber 対象のカード番号
+ * @returns 作成したカード表示用要素
+ */
+const createCard = (cardNumber: number): HTMLLIElement => {
+    const $card = document.createElement("li");
+    $card.classList.add("card");
+    $card.dataset.cardNumber = cardNumber.toString();
+
+    // 裏向きカード用
+    const $back = document.createElement("div");
+    $back.classList.add("back");
+
+    const $backImg = document.createElement("img");
+    $backImg.classList.add("card-image-back");
+    $backImg.alt = `トランプ画像（裏） ${cardNumber + 1}`;
+    $backImg.dataset.cardNumber = cardNumber.toString();
+    // 初期状態で表示するトランプの裏向き画像パス
+    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
+    $backImg.src = filePath;
+    $back.appendChild($backImg);
+
+    // 表向きカード用
+    const $front = document.createElement("div");
+    $front.classList.add("front");
+
+    const $frontImg = document.createElement("img");
+    $frontImg.id = `card_front_${cardNumber + 1}`;
+    $frontImg.classList.add("card-image-front");
+    $frontImg.alt = `トランプ画像（表） ${cardNumber + 1}`;
+    $frontImg.dataset.cardNumber = cardNumber.toString();
+    $front.appendChild($frontImg);
+
+    $card.append($back, $front);
+    return $card;
+}
+
+/**
  * トランプ画像セット用要素を作成する
  */
 export const createCardImages = () => {
@@ -269,31 +342,22 @@ export const createCardImages = () => {
         return;
     }
 
-    const $table = document.createElement("div");
-    $table.classList.add("table");
-
-    // 初期状態で表示するトランプの裏向き画像パス
-    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
+    const $cardsList: HTMLUListElement[] = [];
     let cardNumber = 0;
     for (let i = 0; i < Constant.CARD_TABLE_MAX_ROW_NUMBER; i++) {
-        const $tableRow = document.createElement("div");
-        $tableRow.classList.add("table-row");
+        const $cards = document.createElement("ul");
+        $cards.classList.add("cards");
 
         for (let j = 0; j < Constant.CARD_COUNT_PER_ONE_ROW; j++) {
-            const $img = document.createElement("img");
-            $img.id = `card_${cardNumber + 1}`;
-            $img.classList.add("card-image");
-            $img.dataset.cardNumber = cardNumber.toString();
-            $img.src = filePath;
-
-            $tableRow.appendChild($img);
+            const $card = createCard(cardNumber);
+            $cards.appendChild($card);
             cardNumber++;
         }
 
-        $table.appendChild($tableRow);
+        $cardsList.push($cards);
     }
 
-    $cardArea.append($table);
+    $cardArea.append(...$cardsList);
 }
 
 /**
@@ -367,23 +431,29 @@ const showSelectionResult = (isPair: boolean, domItems: MemoryWeaknessDomItems) 
 
 /**
  * カードが選択された場合に実行される処理
- * @param $image 対象のトランプ画像要素
+ * @param $cardArea 対象のカード画像要素セット領域
  * @param domItems 神経衰弱用 DOM 要素群
  * @returns
  */
-export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeaknessDomItems) => {
-    if ($image.classList.contains(Constant.GRAY_OUT_CLASS_NAME)) {
+export const selectCard = async ($cardArea: HTMLLIElement, domItems: MemoryWeaknessDomItems) => {
+    if ($cardArea.classList.contains(Constant.GRAY_OUT_CLASS_NAME)) {
         // 対象のカードがグレーアウトされている場合は、何もしない
         return;
     }
 
-    const cardNumber = Number($image.dataset.cardNumber);
+    const cardNumber = Number($cardArea.dataset.cardNumber);
     if (!isSelectCardOk(cardNumber)) {
         // 選択対象ではない場合、何もしない
         return;
     }
+
+    const $frontCard = <HTMLImageElement | null>document.getElementById(`card_front_${cardNumber + 1}`);
+    if ($frontCard === null) {
+        return;
+    }
+    $frontCard.src = createTrumpImagePath(cardNumber);
     // 選択されたトランプを表向きにする
-    $image.src = createTrumpImagePath(cardNumber);
+    $cardArea.classList.add("open");
 
     // 選択されたカードの情報（場所）を配列に格納しておく
     selectCardList.push(cardNumber);
@@ -410,7 +480,7 @@ export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeakn
         isGameClear = true;
         domItems.messageArea.innerHTML = "ゲームクリア！<br/>おめでとう！";
         domItems.messageArea.classList.remove(Constant.HIT_CLASS_NAME);
-        setCardDisabled();
+        makeCardUnselectable();
         return;
     }
 
@@ -428,7 +498,7 @@ export const selectCard = async ($image: HTMLImageElement, domItems: MemoryWeakn
     isSelectable = true;
 
     // ペアだった場合は、該当のカードを選択不可に、ペアではなかった場合はカードを裏返す
-    isPair ? setCardDisabled() : turnCardFaceDown();
+    isPair ? makeCardUnselectable() : turnCardFaceDown();
 
     // 選択中のカード情報をリセットする
     selectCardCount = 0;
@@ -474,8 +544,14 @@ export const resetGame = (domItems: MemoryWeaknessDomItems) => {
     removeGrayOut();
 
     // トランプ画像をすべて裏向きにする
-    const filePath = Constant.IMAGE_FOLDER_PATH + Constant.DEFAULT_CARD_FILE_NAME + Constant.IMAGE_EXTENSION;
-    domItems.cardImages.forEach($image => $image.src = filePath);
+    for (const $cardArea of domItems.cardAreas) {
+        const cardNumber = Number($cardArea.dataset.cardNumber);
+        if (Number.isNaN(cardNumber)) {
+            continue;
+        }
+        $cardArea.classList.remove(Constant.OPEN_CLASS_NAME);
+        $cardArea.addEventListener("animationend", removeFrontCardPath);
+    }
 
     init(domItems);
 

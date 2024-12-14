@@ -101,3 +101,8 @@ export const DEFAULT_SELECTED_CARD_NUMBERS = {
     first: -1,
     second: -1,
 };
+
+/**
+ * カードを表向きにするときにセットするクラス名
+ */
+export const OPEN_CLASS_NAME = "open";

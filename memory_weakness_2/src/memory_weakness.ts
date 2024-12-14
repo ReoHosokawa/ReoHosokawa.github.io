@@ -43,7 +43,7 @@ let missCount: number;
  * @param len 0 埋めする桁数
  * @returns 0 埋めした後の値
  */
-const zeroPadding = (target: number, length: number): string => String(target).padStart(length, "0");
+const padZeroFirst = (target: number, length: number): string => String(target).padStart(length, "0");
 
 /**
  * 指定された時間、処理を停止する
@@ -64,7 +64,7 @@ const createTrumpImagePath = (targetCardNumber: number): string => {
     // カードの絵札情報
     const cardType = Constant.CARD_TYPE_LIST[isJoker ? Constant.JOKER_TYPE : cardData.type];
     // カードの番号
-    const cardNumber = zeroPadding(isJoker ? cardData.type : cardData.value, 2);
+    const cardNumber = padZeroFirst(isJoker ? cardData.type : cardData.value, 2);
     // 画像ファイル名
     const fileName = cardType.value + cardNumber + Constant.IMAGE_EXTENSION;
 

@@ -2986,10 +2986,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-linq@^3.2.3:
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/linq/-/linq-3.2.3.tgz#5d9fd6da4e89742d4c447e3d657e74cb254e339d"
-  integrity sha512-OI48ncDVi29Hc4g5+hPd58AkI8YtLUFkZWWvvyC+w1+j8PsDi28tLZnbv3+8PvxSiJUEQDihkQjrIrPkFzEFqQ==
+linq@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/linq/-/linq-4.0.3.tgz#40150ba38347dafe00a3c3b0234b1ebe536c475d"
+  integrity sha512-dP0w2ERJXfVUk6VmmAK+Tz/SxFHwyY7VM6Mrq4fnJmeQf9JNEYFH6qJfV6Qn0N91mfwz2GEE/4S+RDkmDNyUJw==
 
 load-json-file@^1.0.0:
   version "1.1.0"

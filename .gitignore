@@ -2,3 +2,7 @@
 */node_modules/
 # VS Code の設定フォルダは Git 管理対象外
 .vscode/
+# 各プロジェクトの dist フォルダ内の js と css は Git 管理対象外
+*/dist/*.js
+*/dist/*.js.map
+*/dist/css/

@@ -91,10 +91,9 @@ const isCardPair = (): boolean => {
 const showResultMessage = (domItems: MemoryWeaknessDomItems, message: string, className: string | null = null) => {
     const $messageArea = domItems.messageArea;
     $messageArea.innerText = message;
-    if (className === null) {
-        return;
+    if (className !== null) {
+        $messageArea.classList.add(className);
     }
-    $messageArea.classList.add(className);
     $messageArea.style.display = "block";
     domItems.pairCountArea.style.display = "none";
 }
@@ -478,7 +477,7 @@ export const selectCard = async ($cardArea: HTMLLIElement, domItems: MemoryWeakn
     if (pairCount === Constant.MAX_PAIR_NUMBER) {
         // ペア数が最大ペア数に達した場合は、ゲームクリアとする
         isGameClear = true;
-        domItems.messageArea.innerHTML = "ゲームクリア！<br/>おめでとう！";
+        showResultMessage(domItems, `ゲームクリア！（${pairCount} ペア）`);
         domItems.messageArea.classList.remove(Constant.HIT_CLASS_NAME);
         makeCardUnselectable();
         return;
@@ -487,7 +486,7 @@ export const selectCard = async ($cardArea: HTMLLIElement, domItems: MemoryWeakn
     if (missCount === Constant.MAX_MISS_NUMBER) {
         // ミス数が最大ミス可能回数に達した場合は、ゲームオーバーとする
         isGameOver = true;
-        domItems.messageArea.textContent = "ゲームオーバー";
+        showResultMessage(domItems, `ゲームオーバー（${pairCount} ペア）`);
         domItems.messageArea.classList.remove(Constant.MISS_CLASS_NAME);
         flipAllCards();
         return;
@@ -536,6 +535,9 @@ export const resetGame = (domItems: MemoryWeaknessDomItems) => {
         // リセット条件を満たさない場合は、何もしない
         return;
     }
+
+    // 結果メッセージが表示されている場合があるので、非表示にする
+    hideResultMessage(domItems);
 
     // ライフを表示する
     showLifeImages();

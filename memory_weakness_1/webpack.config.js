@@ -62,11 +62,11 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         // 本番環境用の設定
-        config.devtool = false; // ソースマップを出力しない
+        config.devtool = undefined; // ソースマップを出力しない
     } else {
         config.mode = 'development';
         // 開発環境用の設定
-        config.devtool = 'hidden-source-map';   // ソースマップを出力する
+        config.devtool = 'source-map';   // ソースマップを出力する
         config.devServer = {
             // webpack-dev-server の公開フォルダ
             contentBase: outputPath

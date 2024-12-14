@@ -39,7 +39,6 @@ const appInit = () => {
     createCardImages();
 
     const domItems = readDomItems();
-    console.log("domItems: ", domItems);
     if (domItems === null) {
         return;
     }

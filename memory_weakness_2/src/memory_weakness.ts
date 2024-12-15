@@ -153,22 +153,21 @@ const flipAllCards = () => {
 }
 
 /**
- * 対象のイベントに紐づく画像要素に指定されている画像パスを削除する
+ * 対象のイベントに紐づく画像要素に指定されているアニメーション終了イベントを削除する
  * @param e 対象のアニメーションイベント
  * @returns なし
  */
-const removeFrontCardPath = (e: AnimationEvent) => {
+const removeAnimationEndEvent = (e: AnimationEvent) => {
     const $frontCard = <HTMLImageElement | null>e.target;
     if ($frontCard === null) {
         return;
     }
-    $frontCard.src = "";
 
     const $cardArea = $frontCard.closest("li");
     if ($cardArea === null) {
         return;
     }
-    $cardArea.removeEventListener("animationend", removeFrontCardPath);
+    $cardArea.removeEventListener("animationend", removeAnimationEndEvent);
 }
 
 /**
@@ -186,7 +185,7 @@ const turnCardFaceDown = () => {
             continue;
         }
         $cardArea.classList.remove(Constant.OPEN_CLASS_NAME);
-        $cardArea.addEventListener("animationend", removeFrontCardPath);
+        $cardArea.addEventListener("animationend", removeAnimationEndEvent);
     }
 }
 
@@ -446,11 +445,6 @@ export const selectCard = async ($cardArea: HTMLLIElement, domItems: MemoryWeakn
         return;
     }
 
-    const $frontCard = <HTMLImageElement | null>document.getElementById(`card_front_${cardNumber + 1}`);
-    if ($frontCard === null) {
-        return;
-    }
-    $frontCard.src = createTrumpImagePath(cardNumber);
     // 選択されたトランプを表向きにする
     $cardArea.classList.add("open");
 
@@ -552,7 +546,7 @@ export const resetGame = (domItems: MemoryWeaknessDomItems) => {
             continue;
         }
         $cardArea.classList.remove(Constant.OPEN_CLASS_NAME);
-        $cardArea.addEventListener("animationend", removeFrontCardPath);
+        $cardArea.addEventListener("animationend", removeAnimationEndEvent);
     }
 
     init(domItems);
@@ -586,4 +580,18 @@ export const init = (domItems: MemoryWeaknessDomItems) => {
 
     // カードをシャッフルする
     shuffleCards();
+
+    // シャッフル後のカード情報を表向きカード要素に反映する
+    for (const $cardArea of domItems.cardAreas) {
+        const cardNumber = Number($cardArea.dataset.cardNumber);
+        if (Number.isNaN(cardNumber)) {
+            continue;
+        }
+
+        const $frontCard = <HTMLImageElement | null>document.getElementById(`card_front_${cardNumber + 1}`);
+        if ($frontCard === null) {
+            continue;
+        }
+        $frontCard.src = createTrumpImagePath(cardNumber);
+    }
 }

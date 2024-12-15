@@ -471,7 +471,7 @@ export const selectCard = async ($cardArea: HTMLLIElement, domItems: MemoryWeakn
     if (pairCount === Constant.MAX_PAIR_NUMBER) {
         // ペア数が最大ペア数に達した場合は、ゲームクリアとする
         isGameClear = true;
-        showResultMessage(domItems, `ゲームクリア！（${pairCount} ペア）`);
+        showResultMessage(domItems, `クリア！`);
         domItems.messageArea.classList.remove(Constant.HIT_CLASS_NAME);
         makeCardUnselectable();
         return;
@@ -480,7 +480,7 @@ export const selectCard = async ($cardArea: HTMLLIElement, domItems: MemoryWeakn
     if (missCount === Constant.MAX_MISS_NUMBER) {
         // ミス数が最大ミス可能回数に達した場合は、ゲームオーバーとする
         isGameOver = true;
-        showResultMessage(domItems, `ゲームオーバー（${pairCount} ペア）`);
+        showResultMessage(domItems, `残念…${pairCount}ペア`);
         domItems.messageArea.classList.remove(Constant.MISS_CLASS_NAME);
         flipAllCards();
         return;
